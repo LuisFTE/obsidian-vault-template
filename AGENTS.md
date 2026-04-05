@@ -185,6 +185,34 @@ git push origin main
 
 ---
 
+## Helper Scripts
+
+Two Python scripts in `scripts/` run as part of the agent commit blocks. Add them to your trigger prompts as shown below.
+
+### `scripts/bookmark-todo.py`
+
+Updates `.obsidian/bookmarks.json` to always bookmark today's todo, removing the previous day's entry. Run from vault root.
+
+Add to the **Hourly Digest** commit block:
+```bash
+python3 scripts/bookmark-todo.py
+git add -A
+...
+```
+
+### `scripts/update-dashboard.py`
+
+Updates `_Index/Dashboard.md` — replaces the hardcoded date links in the **Today** section with today's date, and updates the `updated:` frontmatter field.
+
+Add to the **Daily Tasks** commit block:
+```bash
+python3 scripts/update-dashboard.py
+git add -A
+...
+```
+
+---
+
 ## Local Cron Alternative (Home Server / WSL)
 
 If you have an always-on machine with WSL2, you can run agents locally instead of via CCR — no trigger slot limits, no git clone overhead (direct file access).
