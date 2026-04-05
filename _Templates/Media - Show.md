@@ -44,7 +44,7 @@ tags: [media, show]
 
 **Watched with:** 
 
-<!-- Plain text only — e.g. "Miki". Wikilinks here create noise in the graph. -->
+<!-- Plain text only — e.g. "Sarah". Wikilinks here create noise in the graph. -->
 
 ---
 

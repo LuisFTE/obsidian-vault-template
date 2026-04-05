@@ -4,7 +4,7 @@ category: media
 type: media
 media_type: video-personal
 date: YYYY-MM-DD
-artist: "[[Life/People/Luis Tamborrell]]"
+artist: "[[Life/People/YOUR_NAME]]"
 location: 
 with: 
 subject: 
@@ -14,7 +14,7 @@ tags: [media, video, personal]
 # 🎥 
 
 **Date:** YYYY-MM-DD
-**Artist:** [[Life/People/Luis Tamborrell]]
+**Artist:** [[Life/People/YOUR_NAME]]
 **Location:** [[Places/]]
 
 ---

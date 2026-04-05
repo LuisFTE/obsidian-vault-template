@@ -19,7 +19,7 @@ tags: [daily, life]
 ---
 
 ## 🌿 Personal
-*(Miki, Kai, boxing, anything outside work)*
+*(relationships, health, hobbies, anything outside work)*
 
 - 
 

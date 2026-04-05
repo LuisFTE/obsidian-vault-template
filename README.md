@@ -1,99 +1,109 @@
-# Obsidian Second Brain — Vault Template
+# Obsidian Second Brain
 
-A personal knowledge management vault powered by Obsidian, Claude AI agents, and GitHub. Captures daily life, work, people, places, media, and goals — with scheduled AI agents that process notes, extract people and places, generate todos, and surface curated content.
+> A personal knowledge management vault powered by Obsidian + Claude AI agents. Captures daily life, work, people, places, and media — with scheduled agents that auto-process your notes, surface connections, and keep everything linked.
 
 ---
 
-## How It Works
+## What It Does
+
+You write daily notes. The agents do the rest.
 
 ```
-You write daily notes on iPhone/desktop
+You write a daily note on your phone
         ↓
 Obsidian Git auto-pushes to GitHub
         ↓
-Hourly CCR agent clones vault, processes notes,
-creates people/place/media notes, updates Now.md, pushes back
+Hourly agent clones vault, processes notes:
+  → creates People notes for anyone mentioned
+  → creates Place notes for any location
+  → creates Media notes (photos, movies, albums)
+  → updates links, fills frontmatter, sets social score
+  → pushes back to GitHub
         ↓
-Daily CCR agent resolves Open Questions,
-runs Weekly Review (Saturdays), appends curated content
+Daily agent runs at noon:
+  → resolves Open Questions you've answered
+  → writes Weekly Review (Saturdays)
+  → surfaces 5 categories of curated content
         ↓
-Obsidian Git auto-pulls agent changes on startup
+Obsidian pulls changes automatically
 ```
+
+Everything links together. Ask Claude about a person, a place, a project — it reads the right notes, not everything.
+
+---
+
+## Screenshots
+
+> *Coming soon — vault graph, daily note, dashboard*
 
 ---
 
 ## Prerequisites
 
-- [Obsidian](https://obsidian.md) (desktop + mobile)
-- GitHub account + private repo
-- [Claude](https://claude.ai) account (Pro or higher for CCR triggers)
-- Obsidian plugins:
-  - **Obsidian Git** — sync to GitHub
-  - **Dataview** — social tracker heatmap
-  - **Heatmap Calendar** — renders the social heatmap
-  - **Calendar** — sidebar date nav, daily note creation
-  - **Advanced Progress Bars** — sprint + goal progress bars
+| Tool | Purpose |
+|---|---|
+| [Obsidian](https://obsidian.md) | Note editor (desktop + mobile) |
+| GitHub account | Sync source of truth |
+| [Claude Pro](https://claude.ai) | Powers the scheduled agents |
+| Obsidian Git plugin | Auto push/pull |
+| Dataview plugin | Social heatmap queries |
+| Heatmap Calendar plugin | Renders the social heatmap |
+| Calendar plugin | Sidebar date nav, daily note creation |
+| Advanced Progress Bars plugin | Sprint + goal progress bars |
 
 ---
 
-## Setup
+## Quick Start
 
-### 1. Create your GitHub repo
+### 1. Use this template
 
-Create a **private** repo on GitHub (e.g. `obsidian-vault`). Do not initialize with a README.
+Click **Use this template** on GitHub, create a private repo named `obsidian-vault`.
 
-### 2. Clone this template
-
-```bash
-git clone https://github.com/LuisFTE/obsidian-vault-template.git obsidian-vault
-cd obsidian-vault
-```
-
-Remove the template remote and add yours:
+### 2. Clone and open in Obsidian
 
 ```bash
-git remote remove origin
-git remote add origin https://github.com/YOUR_USERNAME/obsidian-vault.git
-git branch -M main
-git push -u origin main
+git clone https://github.com/YOUR_USERNAME/obsidian-vault.git
 ```
 
-### 3. Open in Obsidian
+Open the folder as a vault in Obsidian. Install the plugins above.
 
-Open the `obsidian-vault` folder as a vault in Obsidian. Install the plugins listed above.
+### 3. Configure Obsidian Git
 
-### 4. Configure Obsidian Git
+In Obsidian Settings → Community Plugins → Obsidian Git:
 
-In Obsidian settings → Obsidian Git:
-- **Sync method:** Rebase
-- **Merge strategy (pull):** Theirs  
-- **Auto pull interval:** 15 minutes
-- **Auto push interval:** 30 minutes
-- **Pull on startup:** On
+| Setting | Value |
+|---|---|
+| Sync method | Rebase |
+| Merge strategy (pull) | Theirs |
+| Auto pull interval | 15 min |
+| Auto push interval | 30 min |
+| Pull on startup | On |
 
-On **mobile** (iPhone/Android):
-- Same settings; syncMethod defaults to merge — that's fine, theirs covers conflicts
+On **mobile**: same settings. syncMethod defaults to merge — that's fine, theirs covers conflicts.
 
-### 5. Generate a GitHub PAT
+### 4. Fill in `_Index/Now.md`
+
+This is the AI's entry point every session. Fill in your name, role, current sprint, and goals. Keep it current — the agents use it to understand context.
+
+### 5. Create a GitHub PAT
 
 GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens.  
-Grant **Read and write** access to your vault repo under **Contents**.  
-Copy the token — you'll use it in the agent prompts.
+Grant **Read and write** on **Contents** for your vault repo.
 
-### 6. Fill in Now.md
-
-Open `_Index/Now.md` and fill in your details — who you are, current sprint, work/life status. This is the AI agent's entry point every session.
-
-### 7. Set up CCR agents
+### 6. Set up the agents
 
 Go to [claude.ai/code](https://claude.ai/code) → **Triggers** → **New trigger**.
 
-Create both agents from the prompts in [AGENTS.md](./AGENTS.md). Replace:
-- `YOUR_GITHUB_PAT` — your token from step 5
-- `YOUR_USERNAME` — your GitHub username
-- `YOUR_REPO` — your repo name
+Create both agents from the prompts in [AGENTS.md](./AGENTS.md). Replace the placeholders:
+- `YOUR_GITHUB_PAT` → your token from step 5
+- `YOUR_USERNAME` → your GitHub username  
+- `YOUR_REPO` → your repo name
 
-See [AGENTS.md](./AGENTS.md) for full prompts and a local cron alternative.
+See [AGENTS.md](./AGENTS.md) for full prompts and a local cron alternative (no CCR needed).
+
+### 7. Write your first daily note
+
+Open the Calendar plugin sidebar, click today's date. Start writing.
 
 ---
 
@@ -101,71 +111,59 @@ See [AGENTS.md](./AGENTS.md) for full prompts and a local cron alternative.
 
 ```
 vault/
-├── _Index/              # Entry points and indexes
-│   ├── Now.md           # ← AI reads this first every session
-│   ├── Dashboard.md     # Progress bars, project status, social heatmap
-│   ├── Open Questions.md# Async queue for questions the agent needs answered
-│   ├── Content Queue.md # Daily curated content (5 categories, auto-refreshed)
-│   └── Content Queue Log.md  # URL dedup log
+├── _Index/                    # AI entry points and live indexes
+│   ├── Now.md                 # ← AI reads this first every session
+│   ├── Dashboard.md           # Progress bars, heatmap, project status
+│   ├── Open Questions.md      # Async queue for questions needing your input
+│   ├── Content Queue.md       # Daily curated content (auto-populated)
+│   └── Content Queue Log.md   # URL dedup log
 │
-├── _Templates/          # Note templates (used by agent and Calendar plugin)
+├── _Templates/                # All note templates
 │
 ├── Daily/
-│   ├── Life/Notes/      # YYYY-MM-DD.md — daily journal entries
-│   └── Todo/            # YYYY-MM-DD.md — daily todos
+│   ├── Life/Notes/            # YYYY-MM-DD.md  daily journal
+│   └── Todo/                  # YYYY-MM-DD.md  daily todos
 │
 ├── Life/
-│   ├── People/          # Personal contacts (friends, family, colleagues)
-│   ├── Physical/        # Active life projects (relationship, health, etc.)
-│   ├── Ephemeral/       # Feelings, desires, transient states
-│   └── Fact/            # Static reference (values, thinking style, etc.)
+│   ├── People/                # Personal contacts
+│   ├── Physical/              # Active life arcs (health, relationships, etc.)
+│   ├── Ephemeral/             # Transient feelings, desires, states
+│   └── Fact/                  # Static reference (values, thinking style)
 │
 ├── Career/
-│   ├── People/          # Work contacts
-│   └── Physical/        # Work projects, sprint notes, WP log
+│   ├── People/                # Work contacts
+│   └── Physical/              # Work projects, sprint notes, incident log
 │
-├── Places/              # Location notes with people, memories, media links
+├── Places/                    # Location notes — hierarchy, people, memories, media
 │
 ├── Media/
-│   ├── People/          # Public creators — artists, directors, musicians
-│   ├── Channels/        # YouTube channels
-│   └── *.md             # Individual media notes (photos, movies, albums, etc.)
+│   ├── People/                # Public creators — artists, directors, musicians
+│   ├── Channels/              # YouTube channels
+│   └── *.md                   # Individual media notes
 │
-├── Projects/
-│   ├── Physical/        # Active personal projects
-│   └── Ephemeral/       # Dormant/exploratory project ideas
-│
-├── Finance/             # Financial notes and operating system
-├── Learning/            # Language, skills, courses
-├── Reviews/             # Weekly/monthly review notes
-├── Music/               # Music notes
-└── Cooking/             # Recipes and techniques
+├── Projects/                  # Personal projects
+├── Finance/                   # Financial notes and operating system
+├── Learning/                  # Language, skills, courses
+├── Reviews/                   # Weekly/monthly synthesis
+└── Music/                     # Music notes
 ```
 
 ---
 
 ## Note Types
 
-| Type | Purpose | Location |
+| Type | Location | Purpose |
 |---|---|---|
-| Physical | Active projects, events | `Category/Physical/` |
-| Ephemeral | Feelings, desires, states | `Category/Ephemeral/` |
-| Fact | Static reference, benchmarks | `Category/Fact/` |
-| Daily | Day-to-day life log | `Daily/Life/Notes/` |
-| Todo | Work + life tasks | `Daily/Todo/` |
-| Person | Personal contacts | `Life/People/` or `Career/People/` |
-| Creator | Public figures (artists, directors) | `Media/People/` |
-| Place | Locations with hierarchy + people | `Places/` |
-| Media | Photos, videos, movies, albums, etc. | `Media/` |
-| Review | Weekly/monthly synthesis | `Reviews/` |
-
----
-
-## Linking Philosophy
-
-**Use wikilinks** when a person/place is **central** to the note — artist, director, subject of a photo, the place a memory is about.
-
-**Use plain text** when someone was just **present** — e.g. `with: Miki` in frontmatter, not `[[Life/People/Miki]]`. This keeps the graph clean and prevents context overload when querying about a person.
+| Daily | `Daily/Life/Notes/` | Day-to-day journal |
+| Todo | `Daily/Todo/` | Work + life tasks with priorities |
+| Person | `Life/People/` | Personal contacts |
+| Creator | `Media/People/` | Public figures (artists, directors) |
+| Place | `Places/` | Locations with hierarchy, people, media |
+| Media | `Media/` | Photos, videos, movies, shows, albums |
+| Project | `*/Physical/` | Arc-tracked projects |
+| Ephemeral | `*/Ephemeral/` | Transient states and ideas |
+| Fact | `*/Fact/` | Static reference material |
+| Review | `Reviews/` | Weekly/monthly synthesis |
 
 ---
 
@@ -173,41 +171,95 @@ vault/
 
 | Template | Use For |
 |---|---|
-| `Daily Life Note.md` | Daily journal entry |
-| `Todo.md` | Daily task list |
-| `Place.md` | Location note |
+| `Daily Life Note.md` | Daily journal (auto-created by Calendar plugin) |
+| `Todo.md` | Daily task list (auto-created by agent) |
+| `Place.md` | Location — part_of hierarchy, people, memories, media |
 | `Person - Creator.md` | Public figure (artist, director, musician) |
-| `Personal Project.md` | Personal project arc tracking |
-| `Work Project.md` | Work project arc tracking |
+| `Personal Project.md` | Personal project with arc tracking |
+| `Work Project.md` | Work project with sprint arc tracking |
 | `Media - Photo.md` | Photo taken by you |
 | `Media - Video (Personal).md` | Video taken by you |
-| `Media - YouTube.md` | YouTube video watched |
-| `Media - Movie.md` | Movie (with director + cast) |
-| `Media - Show.md` | TV show (with director/creator + cast) |
+| `Media - YouTube.md` | YouTube video — links to channel note |
+| `Media - Movie.md` | Movie — director wikilink + cast table |
+| `Media - Show.md` | TV show — creator wikilink + cast table |
 | `Media - Album.md` | Music album |
 | `Media - Channel.md` | YouTube channel |
 
 ---
 
-## Multiple Writers
+## Linking Philosophy
 
-The vault supports multiple simultaneous writers without conflicts:
+Two rules that keep the graph useful:
 
-| Writer | Role |
-|---|---|
-| iPhone Obsidian Git | Primary raw writing |
-| Desktop Obsidian Git | Local editing |
-| Hourly CCR agent | Digest processing |
-| Daily CCR agent | Questions, review, content |
-| Manual Claude Code | Structural vault work |
+**Wikilinks** — use when someone/something is *central* to the note:
+- Director of the movie you're logging
+- Artist whose work the photo captures
+- Place a memory is fundamentally about
 
-All writers use **pull-rebase** with **theirs** conflict resolution. The CCR agent retries with `git pull --rebase` on push failure.
+**Plain text** — use when someone was just *present*:
+```yaml
+with: Sarah    # ← plain text, not [[Life/People/Sarah]]
+```
+
+This prevents context overload. Asking about a person pulls their people note, relationship notes, and daily entries — not every movie you've watched together.
 
 ---
 
-## Tips
+## The Agents
 
-- Write messy daily notes — the agent cleans up structure, extracts people/places, updates links
-- Answer questions in `_Index/Open Questions.md` inline — check the box and write your answer on the next line
-- `_Index/Now.md` is your single source of truth for the AI — keep it current
-- The social heatmap tracks how connected vs. isolated you've been; score is set automatically by the agent
+Two scheduled Claude agents run automatically. See [AGENTS.md](./AGENTS.md) for the full prompts.
+
+### Hourly Digest
+Runs at the top of every hour. Processes today + yesterday's daily notes:
+- Creates missing people, place, and media notes
+- Updates links and frontmatter
+- Scores social activity (0–5)
+- Writes today's `⚡ Today` section from Now.md
+- Flags unknown people to Open Questions
+
+### Daily Tasks + Weekly Review
+Runs at noon daily:
+- Resolves answered Open Questions
+- Writes weekly review (Saturdays only)
+- Surfaces 5 categories of curated content (2 YouTube + 2 articles each, never repeats)
+
+### Local Cron Alternative
+If you have an always-on machine, you can run agents locally via WSL cron — no CCR trigger limits, no git clone overhead. Setup in [AGENTS.md](./AGENTS.md).
+
+---
+
+## Multiple Writers
+
+| Writer | Role |
+|---|---|
+| Mobile Obsidian Git | Primary raw writing |
+| Desktop Obsidian Git | Local editing |
+| Hourly agent | Digest processing |
+| Daily agent | Questions, review, content |
+| Manual Claude Code | Structural vault work |
+
+All writers use **pull-rebase** + **theirs** conflict resolution. The agents retry with `git pull --rebase` on push failure.
+
+---
+
+## Open Questions Queue
+
+When the digest agent encounters a new person it doesn't recognize, it adds a question to `_Index/Open Questions.md`:
+
+```
+- [ ] [[Daily/Life/Notes/2026-04-03]] — Who is Sarah?
+```
+
+Answer inline, then check it off:
+
+```
+- [x] [[Daily/Life/Notes/2026-04-03]] — Who is Sarah? My college roommate, now lives in Austin.
+```
+
+The daily agent picks up answered questions, creates or updates the relevant note, and clears the queue.
+
+---
+
+## License
+
+MIT — use it, fork it, sell templates based on it. See [LICENSE](./LICENSE).

@@ -31,7 +31,7 @@ tags: [media, album]
 
 **Shared by / Listened with:** 
 
-<!-- Plain text only — e.g. "Miki". Wikilinks here create noise in the graph. -->
+<!-- Plain text only — e.g. "Sarah". Wikilinks here create noise in the graph. -->
 
 ---
 

@@ -52,7 +52,7 @@ For each of the last 2 days (today and yesterday), if `Daily/Life/Notes/YYYY-MM-
    - Movie or show watched/mentioned → `Media - Movie.md` or `Media - Show.md`
    - Album or music mentioned → `Media - Album.md` — include artist, genre if known
    Save to `Media/TITLE.md`. If the note already exists, append a dated bullet to Notes.
-   - `with:` field = plain text only (e.g. "Miki") — no wikilinks for incidental presence
+   - `with:` field = plain text only (e.g. "Sarah") — no wikilinks for incidental presence
    - Wikilinks only for artist/director/subject (central to the work)
 5. **WPs (World Problems):** For any significant work incident mentioned: append a row to `Career/Physical/World Problems.md`.
 6. **Projects:** For any work project mentioned: find the relevant note in `Career/Physical/`, read it, append a dated bullet to the right arc. Do not duplicate.
