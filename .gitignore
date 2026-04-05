@@ -1,0 +1,15 @@
+# Obsidian workspace and cache
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache
+.obsidian/plugins/*/data.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Accidental git clones inside the vault (mobile Obsidian Git creates https: dir)
+https:/
+https:
+http:/
+http:
