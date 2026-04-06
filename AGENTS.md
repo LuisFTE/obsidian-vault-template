@@ -16,63 +16,50 @@ Before using these prompts, replace:
 **Schedule:** `0 * * * *` (top of every hour)  
 **Tools:** Bash, Read, Write, Edit, Glob, Grep
 
+**How it works:** A gate script checks git for user commits since the last agent run. If nothing new was written, only mechanical scripts run (no Claude reasoning, ~0 tokens). If the user wrote something, Claude processes only the diff — not full files.
+
 ### Prompt
 
 ```
 You are a scheduled vault agent for an Obsidian second brain vault.
 
-```bash
-git clone --depth=1 https://YOUR_GITHUB_PAT@github.com/YOUR_USERNAME/YOUR_REPO.git vault
+Setup:
+git clone --depth=20 https://YOUR_GITHUB_PAT@github.com/YOUR_USERNAME/YOUR_REPO.git vault
 cd vault
 git config user.email "vault-agent@auto"
 git config user.name "Vault Agent"
-```
 
-All file paths below are relative to the `vault/` directory. Get today's date as YYYY-MM-DD.
+All file paths are relative to vault/.
 
-## Task 1: Today's notes
+Step 1 - Run mechanical scripts (always):
+python3 scripts/carry-forward-todos.py
+python3 scripts/stamp-frontmatter.py
+python3 scripts/update-sprint-header.py
+python3 scripts/update-dashboard.py
+python3 scripts/bookmark-todo.py
 
-Check if `Daily/Life/Notes/YYYY-MM-DD.md` exists.
-- If missing: read `_Templates/Daily Life Note.md`, replace all `YYYY-MM-DD` with today's date, write the file.
-- If exists but frontmatter `date` field says `YYYY-MM-DD`: update `date`, `title`, add `social: 0` if missing.
+Step 2 - Gate check:
+Run: python3 scripts/check-changes.py
+- If output starts with SKIP: skip to Step 4. Do not read any daily notes.
+- If output starts with PROCESS: the diff of user changes follows. Proceed to Step 3.
 
-Check if `Daily/Todo/YYYY-MM-DD.md` exists.
-- If missing: read `_Templates/Todo.md` and `_Index/Now.md` (for sprint name + days left). Create the todo with today's date filled in and the sprint line populated. Read yesterday's todo and carry forward any `- [ ]` items.
+Step 3 - Digest (only if PROCESS):
+Read _Index/Now.md for context. Work from the diff output - do NOT re-read full daily note files.
+Follow the workflow in Claude - How to Process Daily Notes.md:
+- Extract people; update existing notes or queue in _Index/Open Questions.md
+- Update project notes (Career/Physical/, Projects/Physical/) if touched
+- Update _Index/Now.md if status changed
+- Update Dashboard project statuses and Life Pulse if anything changed
+- Generate next-day todo if end-of-day content is present
+- Set social score in today's daily note frontmatter
 
-## Task 2: Process today and yesterday's daily life notes
-
-For each of the last 2 days (today and yesterday), if `Daily/Life/Notes/YYYY-MM-DD.md` exists:
-
-1. Fix frontmatter placeholders (date, title, tags, social: 0 if missing)
-2. **People:** For each person mentioned by name: check if a person note exists in `Career/People/` or `Life/People/`. If not, add `- [ ] [[Daily/Life/Notes/DATE]] — Who is NAME?` to `_Index/Open Questions.md`
-3. **Places:** For any place mentioned (restaurant, neighborhood, city, venue, country): check if `Places/PLACE.md` exists. If not, create it using `_Templates/Place.md` with what's known from context. If it exists, append a dated bullet to the Memories section.
-4. **Media:** For any media mentioned, use the right template from `_Templates/`:
-   - Photo or video taken → `Media - Photo.md` or `Media - Video (Personal).md` — set artist to your name, link to place if known
-   - YouTube video watched → `Media - YouTube.md` — include URL and channel if mentioned
-   - Movie or show watched/mentioned → `Media - Movie.md` or `Media - Show.md`
-   - Album or music mentioned → `Media - Album.md` — include artist, genre if known
-   Save to `Media/TITLE.md`. If the note already exists, append a dated bullet to Notes.
-   - `with:` field = plain text only (e.g. "Sarah") — no wikilinks for incidental presence
-   - Wikilinks only for artist/director/subject (central to the work)
-5. **WPs (World Problems):** For any significant work incident mentioned: append a row to `Career/Physical/World Problems.md`.
-6. **Projects:** For any work project mentioned: find the relevant note in `Career/Physical/`, read it, append a dated bullet to the right arc. Do not duplicate.
-7. Set `social` score if still 0: 1=household only, 2=online gaming, 3=office/boxing/out, 4=friends in person, 5=big social day
-8. In today's life note only: write a `## ⚡ Today` section (2-3 bullets of what's time-sensitive — pull from `_Index/Now.md`)
-
-## Task 3: Update Now.md
-
-Read `_Index/Now.md`. Update only:
-- `last_digest:` frontmatter field → today's date
-- The `**Last digest:**` line → current timestamp
-
-## Commit and push
-
-```bash
+Step 4 - Commit and push:
 git add -A
-git diff --staged --quiet || git commit -m "vault: digest $(date +%Y-%m-%d) $(date +%H:%M)"
+git diff --staged --quiet || git commit -m "vault: auto $(date +%Y-%m-%d) $(date +%H:%M)"
 git push origin main || (git pull --rebase origin main && git push origin main)
 ```
-```
+
+> **Note:** The commit message format `vault: auto YYYY-MM-DD HH:MM` is the sentinel `check-changes.py` uses to find the last agent run. Do not change it.
 
 ---
 
@@ -187,29 +174,26 @@ git push origin main
 
 ## Helper Scripts
 
-Two Python scripts in `scripts/` run as part of the agent commit blocks. Add them to your trigger prompts as shown below.
+Six Python scripts in `scripts/` handle all mechanical vault maintenance. They run as Step 1 of every hourly digest — before the gate check.
 
-### `scripts/bookmark-todo.py`
+| Script | What it does |
+|---|---|
+| `check-changes.py` | Git diff gate — outputs `SKIP` or `PROCESS\n<diff>` |
+| `carry-forward-todos.py` | Copies unchecked todos yesterday→today; auto-tags `#friction` at 3+ appearances |
+| `stamp-frontmatter.py` | Fills `YYYY-MM-DD` placeholders in today's daily note; stamps `last_digest` in Now.md |
+| `update-sprint-header.py` | Reads `sprint_name/start/end` from Now.md frontmatter; updates "N days left" in today's todo |
+| `update-dashboard.py` | Updates Dashboard Today links and `updated:` date |
+| `bookmark-todo.py` | Swaps Obsidian bookmark to today's todo |
 
-Updates `.obsidian/bookmarks.json` to always bookmark today's todo, removing the previous day's entry. Run from vault root.
+### Sprint frontmatter in Now.md
 
-Add to the **Hourly Digest** commit block:
-```bash
-python3 scripts/bookmark-todo.py
-git add -A
-...
+`update-sprint-header.py` requires these fields in `_Index/Now.md` frontmatter:
+```yaml
+sprint_name: Your Sprint Name
+sprint_start: YYYY-MM-DD
+sprint_end: YYYY-MM-DD
 ```
-
-### `scripts/update-dashboard.py`
-
-Updates `_Index/Dashboard.md` — replaces the hardcoded date links in the **Today** section with today's date, and updates the `updated:` frontmatter field.
-
-Add to the **Daily Tasks** commit block:
-```bash
-python3 scripts/update-dashboard.py
-git add -A
-...
-```
+Update these at the start of each sprint.
 
 ---
 

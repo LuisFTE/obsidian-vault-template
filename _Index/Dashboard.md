@@ -47,6 +47,40 @@ Emergency Fund: 0/30000
 
 ---
 
+## 🧱 Friction (Last 14 Days)
+
+```dataviewjs
+const cutoff = new Date();
+cutoff.setDate(cutoff.getDate() - 14);
+const cutoffStr = cutoff.toISOString().slice(0, 10);
+
+const pages = dv.pages('"Daily/Life/Notes"')
+  .where(p => p.file.name >= cutoffStr)
+  .sort(p => p.file.name, 'desc');
+
+const rows = [];
+for (const page of pages) {
+  const content = await dv.io.load(page.file.path);
+  const lines = content.split('\n');
+  for (const line of lines) {
+    if (line.includes('#friction')) {
+      const clean = line.replace(/^[-*>\s]+/, '').replace(/#friction/g, '').trim();
+      if (clean) rows.push([page.file.link, clean]);
+    }
+  }
+}
+
+if (rows.length === 0) {
+  dv.paragraph("No friction logged in the last 14 days.");
+} else {
+  dv.table(["Date", "Item"], rows);
+}
+```
+
+→ [[_Index/Friction Log]] for full history
+
+---
+
 ## 🤝 Social
 
 ```dataviewjs
