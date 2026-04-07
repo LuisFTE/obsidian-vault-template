@@ -66,7 +66,7 @@ git push origin main || (git pull --rebase origin main && git push origin main)
 ## Agent 2: Daily Tasks + Weekly Review
 
 **Name:** Vault — Daily Tasks + Weekly Review  
-**Schedule:** `0 12 * * *` (noon daily — adjust to your timezone)  
+**Schedule:** `0 5 * * *` (5am daily — adjust to your timezone)  
 **Tools:** Bash, Read, Write, Edit, Glob, Grep, WebSearch
 
 ### Prompt
