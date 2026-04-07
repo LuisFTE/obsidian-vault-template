@@ -1,0 +1,32 @@
+{
+  "APB_height": 8,
+  "APB_endcapToggle": true,
+  "APB_marksToggle": true,
+  "APB_autoMarksToggle": true,
+  "APB_manualMarks": 3,
+  "APB_titleToggle": true,
+  "APB_percentageToggle": true,
+  "APB_fractionToggle": true,
+  "APB_completedToggle": true,
+  "APB_borderToggle": true,
+  "APB_backgroundToggle": true,
+  "APB_progressBarChange": true,
+  "APB_widthToggle": true,
+  "APB_width": 190,
+  "defaultTemplate": {
+    "name": "Default",
+    "gradient": true,
+    "gradientType": false,
+    "colors": [
+      "#2978ef",
+      "#8ec822",
+      "#dfaa22",
+      "#c84922",
+      "#dd4a86"
+    ],
+    "endcap": true,
+    "barHeight": 8,
+    "manualMarks": 3
+  },
+  "templates": []
+}
