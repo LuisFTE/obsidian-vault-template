@@ -12,43 +12,47 @@ tags: [daily, life]
 ---
 
 ## 💼 Work
-*(What you worked on, what happened, what's blocked, who you dealt with)*
+
+> [!note]- hint
+> What you worked on, what happened, what's blocked, who you dealt with
 
 - 
 
 ---
 
-## 🌿 Personal
-*(relationships, health, hobbies, anything outside work)*
+## 🌿 Life
+
+> [!note]- hint
+> Relationships, health, hobbies, anything outside work
 
 - 
 
 ---
 
 ## 🧠 Mind
-*(What's sitting with you — stress, ideas, things you're processing)*
-*(Tag anything you avoided, procrastinated on, or felt resistance toward with #friction)*
+
+> [!note]- hint
+> What's sitting with you — stress, ideas, things you're processing
+> Tag anything you avoided, procrastinated on, or felt resistance toward with #friction
 
 - 
 
 ---
 
 ## 🗓️ Plans
-*(Scheduled things with dates, and wants without dates)*
 
-- YYYY-MM-DD — 
-- someday — 
-
----
-
-## ⚡ Today
-*(Quick captures — things to do or order today before you forget)*
+> [!note]- hint
+> Scheduled things with dates, and wants without dates
+> - YYYY-MM-DD — scheduled event
+> - someday — thing you want to do eventually
 
 - 
 
 ---
 
-## ➡️ Tomorrow
-*(Anything you already know needs to happen)*
+## ⚡ Today
+
+> [!note]- hint
+> Quick captures — things to do or order today before you forget
 
 - 

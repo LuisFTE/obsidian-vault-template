@@ -5,12 +5,14 @@ Updates _Index/Dashboard.md:
   - Today section: today's daily note + todo links
   - updated frontmatter field
 """
-import re, json
+import re
 from datetime import date
 from pathlib import Path
 
+VAULT = Path(__file__).parent.parent  # scripts/ -> vault root
+
 today = date.today().strftime("%Y-%m-%d")
-dashboard = Path("_Index/Dashboard.md")
+dashboard = VAULT / "_Index/Dashboard.md"
 content = dashboard.read_text()
 
 # --- Update frontmatter updated field ---

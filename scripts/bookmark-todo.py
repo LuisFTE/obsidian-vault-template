@@ -3,13 +3,15 @@
 Run from vault root: python3 scripts/bookmark-todo.py
 Updates .obsidian/bookmarks.json to bookmark today's todo, removing any previous todo bookmark.
 """
-import json, time, sys
+import json, time
 from datetime import date
 from pathlib import Path
 
+VAULT = Path(__file__).parent.parent  # scripts/ -> vault root
+
 today = date.today().strftime("%Y-%m-%d")
 todo_path = f"Daily/Todo/{today}.md"
-bookmarks_file = Path(".obsidian/bookmarks.json")
+bookmarks_file = VAULT / ".obsidian/bookmarks.json"
 
 if not bookmarks_file.exists():
     data = {"items": []}
