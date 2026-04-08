@@ -57,18 +57,20 @@ Everything links together. Ask Claude about a person, a place, a project — it 
 
 ### Option A — Install Script (recommended)
 
-**Windows** — open PowerShell as Administrator and run:
+Pick the command for your OS and run it. That's the only decision you need to make.
+
+**Windows** — open PowerShell as Administrator:
 ```powershell
 irm https://raw.githubusercontent.com/LuisFTE/obsidian-vault-template/main/install.ps1 | iex
 ```
-Installs WSL2 + Ubuntu if needed, restarts if required, then hands off to the bash script automatically.
+Installs WSL2 + Ubuntu if needed, then runs the rest automatically inside Linux. You don't need to run anything else.
 
-**Linux / macOS / WSL2 already set up:**
+**Linux / macOS:**
 ```bash
 bash <(curl -fsSL https://raw.githubusercontent.com/LuisFTE/obsidian-vault-template/main/install.sh)
 ```
 
-Both paths handle everything: installs dependencies (Node, Claude Code, gh), authenticates GitHub and Claude, creates your private repo from this template, sets up the ChatGPT Chats folder, creates both scheduled agents, and walks you through filling in Now.md interactively. Then install Obsidian on your phone and/or PC and follow OBSIDIAN_SETUP.md — that's it.
+From there, both paths are identical: install dependencies, authenticate GitHub and Claude, create your private vault repo, set up folders, create the scheduled agents, and walk you through filling in Now.md. Then install Obsidian on your phone and/or PC and follow OBSIDIAN_SETUP.md — that's it.
 
 ---
 
