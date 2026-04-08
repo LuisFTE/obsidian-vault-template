@@ -18,6 +18,7 @@
 - [The Agents](#the-agents)
 - [Multiple Writers](#multiple-writers)
 - [Open Questions Queue](#open-questions-queue)
+- [Receiving Updates](#receiving-updates)
 - [License](#license)
 
 ---
@@ -284,6 +285,26 @@ Answer inline, then check it off:
 ```
 
 The daily agent picks up answered questions, creates or updates the relevant note, and clears the queue.
+
+---
+
+## Receiving Updates
+
+When this template gets updated (new templates, improved scripts, updated Claude instruction notes), run from inside your vault:
+
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/LuisFTE/obsidian-vault-template/main/update.sh)
+```
+
+The update script only touches system files — your personal notes, daily logs, and vault content are never modified:
+
+| Updated | Never touched |
+|---|---|
+| `_Templates/` | `_Index/`, `Daily/` |
+| `scripts/` | `Life/`, `Career/`, `Projects/`, etc. |
+| `Claude - *.md` instruction notes | `Now.md` |
+| `OBSIDIAN_SETUP.md` | `.obsidian/` |
+| `AGENTS.md` prompt text | Your PAT and repo credentials |
 
 ---
 
