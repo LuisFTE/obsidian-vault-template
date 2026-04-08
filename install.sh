@@ -86,26 +86,14 @@ success "GitHub: $GH_NAME ($GH_USER)"
 echo ""
 
 # =============================================================================
-# 3. Anthropic API Key
+# 3. Claude Auth
 # =============================================================================
 
-if [ -z "${ANTHROPIC_API_KEY:-}" ]; then
-  prompt "Anthropic API key (from console.anthropic.com — input hidden):"
-  read -r -s ANTHROPIC_API_KEY
-  echo ""
-  if [ -z "$ANTHROPIC_API_KEY" ]; then
-    error "API key cannot be empty."
-  fi
-  # Persist to shell profile
-  SHELL_RC="$HOME/.bashrc"
-  [ -f "$HOME/.zshrc" ] && SHELL_RC="$HOME/.zshrc"
-  if ! grep -q "ANTHROPIC_API_KEY" "$SHELL_RC" 2>/dev/null; then
-    echo "" >> "$SHELL_RC"
-    echo "export ANTHROPIC_API_KEY='$ANTHROPIC_API_KEY'" >> "$SHELL_RC"
-  fi
-  export ANTHROPIC_API_KEY
+if ! claude auth status &>/dev/null; then
+  info "Signing in to Claude (browser will open)..."
+  claude auth login
 fi
-success "Anthropic API key set"
+success "Claude: signed in"
 echo ""
 
 # =============================================================================
