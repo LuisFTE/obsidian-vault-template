@@ -55,15 +55,20 @@ Everything links together. Ask Claude about a person, a place, a project — it 
 
 ## Quick Start
 
-### Option A — Install Script (Linux / WSL2, recommended)
+### Option A — Install Script (recommended)
 
+**Windows** — open PowerShell as Administrator and run:
+```powershell
+irm https://raw.githubusercontent.com/LuisFTE/obsidian-vault-template/main/install.ps1 | iex
+```
+Installs WSL2 + Ubuntu if needed, restarts if required, then hands off to the bash script automatically.
+
+**Linux / macOS / WSL2 already set up:**
 ```bash
 bash <(curl -fsSL https://raw.githubusercontent.com/LuisFTE/obsidian-vault-template/main/install.sh)
 ```
 
-The script handles everything: installs dependencies (Node, Claude Code, gh), authenticates GitHub, creates your private repo from this template, sets up the ChatGPT Chats folder, and creates both scheduled agents. Then follow the 3 manual steps it prints at the end.
-
-Requires: WSL2 on Windows, or native Linux/macOS. If you don't have WSL2, [install it first](https://learn.microsoft.com/en-us/windows/wsl/install) (`wsl --install` in PowerShell as admin, then restart).
+Both paths handle everything: installs dependencies (Node, Claude Code, gh), authenticates GitHub and Claude, creates your private repo from this template, sets up the ChatGPT Chats folder, creates both scheduled agents, and walks you through filling in Now.md interactively. Then follow the 2 manual steps it prints at the end.
 
 ---
 
