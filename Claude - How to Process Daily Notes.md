@@ -144,6 +144,22 @@ Scan the daily note and work todo for project mentions — both work and persona
 - New tool, codebase, or system mentioned for the first time → propose new project note
 - Tech stack details dropped casually → add to the relevant project's Tech Stack section
 
+## Step 6b — Act on friction decisions
+
+Scan the Carry Forward section of today's todo for items tagged `#friction-kill`, `#friction-shrink`, `#friction-schedule`, or `#friction-diagnose`. These are items where the user checked a decision box yesterday.
+
+For each:
+
+**#friction-kill** → Remove the item entirely from the todo. Log it as a one-liner in a comment or the Done section: `~~item text~~ — killed`.
+
+**#friction-shrink** → Rewrite the item as the smallest possible next action. Replace the full item text with something completable in 20-30 min. Remove the `#friction-shrink` tag and `#friction` tag. Move to the appropriate Work or Life section.
+
+**#friction-schedule** → Rewrite the item with a time placeholder: `Today HH:MM–HH:MM — item text`. Remove the friction tags. Move to Work or Life section. If you can infer a good time from context (morning task, evening errand), suggest it — otherwise leave `HH:MM` for the user to fill.
+
+**#friction-diagnose** → Rewrite the item as a question: `Why am I avoiding [item]?` Add it to `_Index/Open Questions.md` instead of the todo. Remove from Carry Forward.
+
+After acting on each decision, remove the decision sub-checkboxes from the item.
+
 ## Step 7 — Pattern detection
 
 After extracting people and projects, scan the daily note for recurring themes — activities, frustrations, health observations, habits, feelings. Then grep across previous daily notes to count how many times each appears.
