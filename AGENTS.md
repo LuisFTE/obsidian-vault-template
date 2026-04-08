@@ -243,6 +243,79 @@ open(path, 'w').write(text)
 "
 ```
 
+## Task 6: Scratchpad Processing
+
+Read all `.md` files in `Scratchpad/` (not `Scratchpad/Archived/`). For each file:
+
+### Step 1 — Read and assess
+
+Read the full content. Determine if there is extractable signal:
+
+**Has signal:**
+- Named people not yet in the vault
+- A desire, idea, or creative direction that keeps coming back
+- A decision or realization worth remembering
+- A project thread or tech interest
+- An emotional pattern worth tracking
+
+**No signal (noise):**
+- Pure venting with nothing new — no people, no decisions, no ideas
+- Content already fully captured in a same-day daily note
+- Thoughts too vague or transient to be worth a note
+
+### Step 2 — Extract and create vault notes (signal only)
+
+Apply the same logic as ChatGPT chat processing:
+- Named person not in vault → queue in `_Index/Open Questions.md`
+- New desire or creative direction → propose or create an Ephemeral note
+- Project or tech thread → update or propose a Physical note
+- Emotional pattern → check if an Ephemeral exists; update or propose one
+- Connects to an existing note → update it with dated bullet
+
+Do not create notes from a single vague mention. Look for specificity.
+
+### Step 3 — Stamp metadata
+
+Whether signal or noise, stamp the file with frontmatter before archiving:
+
+```python
+python3 -c "
+import re, sys
+from datetime import datetime
+
+path = sys.argv[1]
+text = open(path).read()
+
+# Skip if frontmatter already exists
+if text.startswith('---'):
+    sys.exit(0)
+
+# Generate title from first non-empty line, or filename
+lines = [l.strip() for l in text.splitlines() if l.strip()]
+title = lines[0][:60] if lines else path.split('/')[-1].replace('.md', '')
+title = re.sub(r'^#+\s*', '', title)  # strip markdown heading prefix
+
+date = datetime.today().strftime('%Y-%m-%d')
+
+frontmatter = f'---\ntitle: {title}\ndate: {date}\ntags: [scratchpad]\nprocessed: true\n---\n\n'
+open(path, 'w').write(frontmatter + text)
+" FILEPATH
+```
+
+Add `processed: noise` instead of `processed: true` if no signal was found.
+
+Auto-detect and add content tags if strong signals exist (e.g. `videography`, `relationships`, `career`).
+
+### Step 4 — Archive
+
+Move the file to `Scratchpad/Archived/`:
+
+```bash
+mv "Scratchpad/FILENAME.md" "Scratchpad/Archived/FILENAME.md"
+```
+
+Never delete scratchpad files. Always archive.
+
 ## Commit and push
 
 ```bash
