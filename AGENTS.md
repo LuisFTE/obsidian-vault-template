@@ -138,7 +138,7 @@ For each of the 5 categories:
 
 ### Step 3d — Write output
 
-Append to `_Index/Content Queue.md`:
+Insert the new block at the **top** of `_Index/Content Queue.md`, immediately after the `<!-- Agent appends -->` comment line:
 
 ```
 ## YYYY-MM-DD — Weekday
@@ -154,12 +154,14 @@ Append to `_Index/Content Queue.md`:
 [repeat for all 5 categories]
 ```
 
-Append all new URLs to `_Index/Content Queue Log.md`, one per line:
+Insert all new URLs at the **top** of `_Index/Content Queue Log.md`, immediately after the `<!-- Agent appends -->` comment line:
 ```
 YYYY-MM-DD | url
 ```
 
-Remove entries in `_Index/Content Queue.md` older than 14 days.
+Remove entries in `_Index/Content Queue.md` with a date older than 3 days from today.
+
+Remove entries in `_Index/Content Queue Log.md` with a date older than 7 days from today.
 
 ## Task 4: Signals Block
 
