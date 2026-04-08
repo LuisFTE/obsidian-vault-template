@@ -4,6 +4,24 @@
 
 ---
 
+## Contents
+
+- [What It Does](#what-it-does)
+- [Prerequisites](#prerequisites)
+- [Quick Start](#quick-start)
+  - [Option A — Install Script](#option-a--install-script-recommended)
+  - [Option B — Manual Setup](#option-b--manual-setup)
+- [Folder Structure](#folder-structure)
+- [Note Types](#note-types)
+- [Templates](#templates)
+- [Linking Philosophy](#linking-philosophy)
+- [The Agents](#the-agents)
+- [Multiple Writers](#multiple-writers)
+- [Open Questions Queue](#open-questions-queue)
+- [License](#license)
+
+---
+
 ## What It Does
 
 You write daily notes. The agents do the rest.
