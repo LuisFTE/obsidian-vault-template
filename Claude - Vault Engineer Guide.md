@@ -59,6 +59,8 @@ Media/           — Things the user consumed or photographed
   People/        — Public creators (artists, directors, musicians) — NOT personal contacts
   Channels/      — YouTube channels and similar
 Places/          — Physical locations (cities, neighborhoods, venues, transit)
+Scratchpad/      — Freeform notes and brain dumps; processed by 5am agent, archived after
+  Archived/      — Processed scratchpad files (never deleted)
 scripts/         — Python utility scripts run by agents or manually
 ```
 
