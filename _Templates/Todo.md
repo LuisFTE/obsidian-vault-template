@@ -10,6 +10,11 @@ tags: [daily, todo]
 
 🔴 must · 🟡 should · ⚪ optional
 
+> [!tip]- 💡 Suggest
+> *Agent-generated — one nudge based on what's been alive in your vault. Not a task.*
+>
+> —
+
 ---
 
 ## 💼 Work

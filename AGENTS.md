@@ -209,6 +209,40 @@ open(path, 'w').write(text)
 
 Tone: observational, not prescriptive. Short phrases. The user decides what to do with it.
 
+## Task 5: Suggest
+
+Generate one suggestion for today's todo based on what's alive in the vault. This sits at the top of the todo as a nudge — not a task, just a spark.
+
+Read recent media notes, person notes, and ephemerals. Look for something the user has been returning to — a director, author, artist, topic, idea — and make one specific follow-through recommendation derived from that.
+
+**Rules:**
+- One item only — never a list
+- Must come from something already in the vault — not invented
+- Specific: "Arrival and Enemy are his most different from Dune" not "his other films"
+- Framing: curious, not prescriptive — "you keep coming back to X" not "you should do Y"
+- If nothing stands out, skip it — leave the placeholder as `—`
+
+Inject into today's todo by replacing the `—` placeholder in the `[!tip]- 💡 Suggest` callout:
+
+```python
+python3 -c "
+import re
+from datetime import datetime
+
+today = datetime.today().strftime('%Y-%m-%d')
+path = f'Daily/Todo/{today}.md'
+suggestion = 'YOUR SUGGESTION HERE'
+
+text = open(path).read()
+text = re.sub(
+    r'(> \[!tip\]- 💡 Suggest\n> \*.*?\*\n>\n> )—',
+    rf'\g<1>{suggestion}',
+    text
+)
+open(path, 'w').write(text)
+"
+```
+
 ## Commit and push
 
 ```bash
