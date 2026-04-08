@@ -9,16 +9,16 @@ tags: [daily, life]
 
 # 📅 YYYY-MM-DD
 
+> [!abstract]- 🔭 Signals
+> **Patterns:** —
+> **Threads:** —
+> **Connects:** —
+
 > [!note]- what is this?
 > Agent-generated every morning to inspire writing — open it, read it, let it pull something out of you.
 > - **Patterns:** recurring themes across your recent notes — what keeps showing up
 > - **Threads:** ideas or desires resurfacing, not yet a project — what wants to become something
 > - **Connects:** links between what you've been writing and what's already in your vault — what's already alive
-
-> [!abstract]- 🔭 Signals
-> **Patterns:** —
-> **Threads:** —
-> **Connects:** —
 
 ---
 
