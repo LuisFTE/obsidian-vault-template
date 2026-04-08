@@ -161,6 +161,54 @@ YYYY-MM-DD | url
 
 Remove entries in `_Index/Content Queue.md` older than 14 days.
 
+## Task 4: Signals Block
+
+Generate a `🔭 Signals` block for today's daily note — a writing key the user sees when they open the note.
+
+Read the last 5 `Daily/Life/Notes/YYYY-MM-DD.md` files and `_Index/Ephemeral - Active.md`. From this, generate three fields:
+
+**Patterns** (2–3 bullets) — recurring themes, words, feelings across recent notes. Specific and observational.
+- Bad: "You seem stressed" → Good: "Anxiety + money appeared together twice this week"
+
+**Threads** (1–3 bullets) — ideas or desires that surfaced more than once, not yet a project. Things that want to become something.
+- Bad: "You mentioned VFX" → Good: "VFX pipeline direction — came up again unprompted"
+
+**Connects** (1–2 bullets) — links between recent writing and existing vault notes. Always include the wikilink.
+- Bad: "You mentioned work stress" → Good: "Feeling behind at work → [[Career/Ephemeral/Example]] active 3 weeks"
+
+If today's daily note doesn't exist, create it from `_Templates/Daily Life Note.md` and fill the frontmatter placeholders (title, date, H1) with today's date.
+
+Then inject the Signals by replacing the placeholder block in the note:
+
+```python
+python3 -c "
+import re, sys
+from datetime import datetime
+
+today = datetime.today().strftime('%Y-%m-%d')
+path = f'Daily/Life/Notes/{today}.md'
+
+patterns = 'LINE1 · LINE2'  # replace with actual content
+threads  = 'LINE1 · LINE2'
+connects = 'LINE1'
+
+signals = f'''> [!abstract]- 🔭 Signals
+> **Patterns:** {patterns}
+> **Threads:** {threads}
+> **Connects:** {connects}'''
+
+text = open(path).read()
+text = re.sub(
+    r'> \[!abstract\]- 🔭 Signals\n> \*\*Patterns:\*\* —\n> \*\*Threads:\*\* —\n> \*\*Connects:\*\* —',
+    signals,
+    text
+)
+open(path, 'w').write(text)
+"
+```
+
+Tone: observational, not prescriptive. Short phrases. The user decides what to do with it.
+
 ## Commit and push
 
 ```bash
