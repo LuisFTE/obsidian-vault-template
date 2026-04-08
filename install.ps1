@@ -33,6 +33,45 @@ if ($build -lt 19041) {
     exit 1
 }
 
+# --- Virtualization ------------------------------------------------------
+
+Write-Step "Checking hardware virtualization..."
+
+$virtEnabled = $false
+try {
+    $cpu = Get-WmiObject -Class Win32_Processor -ErrorAction Stop
+    $virtEnabled = $cpu.VirtualizationFirmwareEnabled
+} catch {}
+
+# Fallback: parse systeminfo output
+if (-not $virtEnabled) {
+    $sysinfo = systeminfo 2>&1 | Select-String "Virtualization Enabled In Firmware"
+    if ($sysinfo -match "Yes") { $virtEnabled = $true }
+}
+
+if (-not $virtEnabled) {
+    Write-Host ""
+    Write-Warn "Hardware virtualization does not appear to be enabled."
+    Write-Host ""
+    Write-Host "WSL2 requires Intel VT-x or AMD-V to be enabled in your BIOS/UEFI."
+    Write-Host ""
+    Write-Host "How to enable it:"
+    Write-Host "  1. Restart your PC and enter BIOS/UEFI setup"
+    Write-Host "     (usually Del, F2, F10, or F12 during boot — check your PC's brand)"
+    Write-Host "  2. Look for: Virtualization Technology, Intel VT-x, AMD-V, or SVM Mode"
+    Write-Host "  3. Set it to Enabled"
+    Write-Host "  4. Save and exit, then re-run this script"
+    Write-Host ""
+    Write-Host "Common BIOS locations:"
+    Write-Host "  Intel: Advanced -> CPU Configuration -> Intel Virtualization Technology"
+    Write-Host "  AMD:   Advanced -> CPU Configuration -> SVM Mode"
+    Write-Host ""
+    $continue = Read-Host "Continue anyway? Only do this if you know virtualization is already on (y/N)"
+    if ($continue -ne "y" -and $continue -ne "Y") { exit 1 }
+} else {
+    Write-Ok "Hardware virtualization is enabled"
+}
+
 # --- WSL -----------------------------------------------------------------
 
 $wslInstalled = $false
