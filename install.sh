@@ -234,16 +234,47 @@ success "Agents created"
 echo ""
 
 # =============================================================================
-# 9. Done — Manual Steps
+# 9. Fill in Now.md (interactive Claude session)
 # =============================================================================
 
-echo -e "${GREEN}${BOLD}=== Setup Complete ===${NC}"
+echo -e "${GREEN}${BOLD}=== Almost done! ===${NC}"
 echo ""
 echo -e "${BOLD}Your vault:${NC} $VAULT_PATH"
 echo -e "${BOLD}GitHub:${NC}    https://github.com/$GH_USER/$REPO_NAME"
-echo -e "${BOLD}Chats:${NC}     $CHATS_DIR"
 echo ""
-echo -e "${BOLD}3 manual steps remaining:${NC}"
+echo -e "${CYAN}Starting a Claude session to fill in your Now.md..."
+echo -e "Claude will ask you a few questions about yourself and set it up.${NC}"
+echo ""
+
+claude "You are helping a new user set up their Obsidian second brain vault.
+
+Your only job right now is to fill in the file \`_Index/Now.md\` in the vault at: $VAULT_PATH
+
+Read the current Now.md first, then ask the user the following questions one section at a time (don't dump all questions at once):
+
+1. Who are you? (name, what you do, where you live — 1-2 sentences)
+2. Do you work in sprints? If yes: sprint name, start date, end date, and any active tickets/tasks right now.
+3. What are you actively working on at work right now? (projects, status)
+4. Quick life snapshot: finances, relationships, health — anything worth tracking?
+5. Anything the AI agent should know about you every session? (response style preferences, recurring context, quirks)
+
+After each answer, write it into the relevant section of Now.md immediately — don't wait to collect all answers first.
+
+Also replace these placeholders with real values:
+- \`YYYY-MM-DD\` in frontmatter → today's date
+- \`Month YYYY\` in the H1 → current month and year
+- \`YOUR_USERNAME/obsidian-vault\` in 'What the Agent Should Know' → $GH_USER/$REPO_NAME
+
+When done, commit and push:
+  cd $VAULT_PATH
+  git add _Index/Now.md
+  git commit -m 'vault: manual — fill Now.md on setup'
+  git push"
+
+echo ""
+echo -e "${GREEN}${BOLD}=== Setup Complete ===${NC}"
+echo ""
+echo -e "${BOLD}2 steps remaining:${NC}"
 echo ""
 echo -e "  1. ${YELLOW}Install Obsidian${NC}"
 echo -e "     https://obsidian.md → open vault at: $VAULT_PATH"
@@ -251,10 +282,6 @@ echo ""
 echo -e "  2. ${YELLOW}Install and configure plugins${NC}"
 echo -e "     Follow: $VAULT_PATH/OBSIDIAN_SETUP.md"
 echo ""
-echo -e "  3. ${YELLOW}Fill in Now.md${NC}"
-echo -e "     Open: $VAULT_PATH/_Index/Now.md"
-echo -e "     Add your name, job, active projects, current goals, sprint info"
-echo ""
-echo -e "${CYAN}The hourly digest agent will start running automatically."
-echo -e "Write your first daily note tomorrow and it will process it.${NC}"
+echo -e "${CYAN}The hourly digest agent runs automatically every hour."
+echo -e "Write your first daily note and it will process it.${NC}"
 echo ""
