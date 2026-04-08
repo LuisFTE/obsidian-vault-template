@@ -168,11 +168,18 @@ if [ ${#CHANGED[@]} -eq 0 ]; then
   exit 0
 fi
 
-info "Committing updates..."
+# Show diff before committing so user can see exactly what changed
+info "Changes:"
+echo ""
 git add "${CHANGED[@]}"
-git commit -m "vault: manual — update system files from template"
+git diff --cached --stat
+echo ""
+git diff --cached -- "${CHANGED[@]}" | head -120
+echo ""
+
+git commit -m "vault: manual — update system files from template" --quiet
 git pull --rebase --quiet
-git push
+git push --quiet
 
 echo ""
 echo -e "${GREEN}${BOLD}=== Update Complete ===${NC}"
