@@ -55,53 +55,55 @@ Everything links together. Ask Claude about a person, a place, a project — it 
 
 ## Quick Start
 
-### 1. Use this template
+### Option A — Install Script (Linux / WSL2, recommended)
+
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/LuisFTE/obsidian-vault-template/main/install.sh)
+```
+
+The script handles everything: installs dependencies (Node, Claude Code, gh), authenticates GitHub, creates your private repo from this template, sets up the ChatGPT Chats folder, and creates both scheduled agents. Then follow the 3 manual steps it prints at the end.
+
+Requires: WSL2 on Windows, or native Linux/macOS. If you don't have WSL2, [install it first](https://learn.microsoft.com/en-us/windows/wsl/install) (`wsl --install` in PowerShell as admin, then restart).
+
+---
+
+### Option B — Manual Setup
+
+**1. Use this template**
 
 Click **Use this template** on GitHub, create a private repo named `obsidian-vault`.
 
-### 2. Clone and open in Obsidian
+**2. Clone and open in Obsidian**
 
 ```bash
 git clone https://github.com/YOUR_USERNAME/obsidian-vault.git
 ```
 
-Open the folder as a vault in Obsidian. Install the plugins above.
+Open the folder as a vault in Obsidian. Install the plugins listed in Prerequisites above.
 
-### 3. Configure Obsidian Git
+**3. Configure plugins**
 
-In Obsidian Settings → Community Plugins → Obsidian Git:
+Follow [OBSIDIAN_SETUP.md](./OBSIDIAN_SETUP.md) for exact plugin settings.
 
-| Setting | Value |
-|---|---|
-| Sync method | Rebase |
-| Merge strategy (pull) | Theirs |
-| Auto pull interval | 15 min |
-| Auto push interval | 30 min |
-| Pull on startup | On |
+**4. Fill in `_Index/Now.md`**
 
-On **mobile**: same settings. syncMethod defaults to merge — that's fine, theirs covers conflicts.
+The AI's entry point every session. Fill in your name, role, current sprint, goals. Keep it current.
 
-### 4. Fill in `_Index/Now.md`
-
-This is the AI's entry point every session. Fill in your name, role, current sprint, and goals. Keep it current — the agents use it to understand context.
-
-### 5. Create a GitHub PAT
+**5. Create a GitHub PAT**
 
 GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens.  
 Grant **Read and write** on **Contents** for your vault repo.
 
-### 6. Set up the agents
+**6. Set up the agents**
 
 Go to [claude.ai/code](https://claude.ai/code) → **Triggers** → **New trigger**.
 
-Create both agents from the prompts in [AGENTS.md](./AGENTS.md). Replace the placeholders:
+Create both agents from the prompts in [AGENTS.md](./AGENTS.md). Replace:
 - `YOUR_GITHUB_PAT` → your token from step 5
 - `YOUR_USERNAME` → your GitHub username  
 - `YOUR_REPO` → your repo name
 
-See [AGENTS.md](./AGENTS.md) for full prompts and a local cron alternative (no CCR needed).
-
-### 7. Write your first daily note
+**7. Write your first daily note**
 
 Open the Calendar plugin sidebar, click today's date. Start writing.
 
@@ -218,7 +220,7 @@ Runs at the top of every hour. Processes today + yesterday's daily notes:
 - Flags unknown people to Open Questions
 
 ### Daily Tasks + Weekly Review
-Runs at noon daily:
+Runs at 5am daily:
 - Resolves answered Open Questions
 - Writes weekly review (Saturdays only)
 - Surfaces 5 categories of curated content (2 YouTube + 2 articles each, never repeats)
