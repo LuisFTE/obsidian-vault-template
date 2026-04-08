@@ -80,8 +80,7 @@ if ! gh auth status &>/dev/null; then
   echo ""
   echo -e "  Don't have an account? Create a free one at ${CYAN}https://github.com/signup${NC}"
   echo ""
-  echo "Press Enter when ready, then sign in via the browser..."
-  read -r
+  read -rp $'\n[Press Enter to open GitHub in your browser...] '
   gh auth login --web --git-protocol https
 fi
 
@@ -103,8 +102,7 @@ if ! claude auth status &>/dev/null; then
   echo -e "  No account? Sign up at ${CYAN}https://claude.ai${NC}"
   echo -e "  Already have free Claude? Upgrade at ${CYAN}https://claude.ai/upgrade${NC}"
   echo ""
-  echo "Press Enter when ready, then sign in via the browser..."
-  read -r
+  read -rp $'\n[Press Enter to open Claude in your browser...] '
   claude auth login
 fi
 success "Claude: signed in"
@@ -115,13 +113,11 @@ success "Claude: signed in"
 
 divider
 echo ""
-prompt "Vault repo name (default: obsidian-vault):"
-read -r REPO_NAME
+read -rp $'\n\033[1mVault repo name\033[0m (default: obsidian-vault): ' REPO_NAME
 REPO_NAME="${REPO_NAME:-obsidian-vault}"
 
 DEFAULT_VAULT_PATH="$HOME/$REPO_NAME"
-prompt "Install path (default: $DEFAULT_VAULT_PATH):"
-read -r VAULT_PATH_INPUT
+read -rp $'\033[1mInstall path\033[0m (default: '"$DEFAULT_VAULT_PATH"'): ' VAULT_PATH_INPUT
 VAULT_PATH="${VAULT_PATH_INPUT:-$DEFAULT_VAULT_PATH}"
 VAULT_PATH=$(eval echo "$VAULT_PATH")
 
