@@ -68,7 +68,7 @@ Installs WSL2 + Ubuntu if needed, restarts if required, then hands off to the ba
 bash <(curl -fsSL https://raw.githubusercontent.com/LuisFTE/obsidian-vault-template/main/install.sh)
 ```
 
-Both paths handle everything: installs dependencies (Node, Claude Code, gh), authenticates GitHub and Claude, creates your private repo from this template, sets up the ChatGPT Chats folder, creates both scheduled agents, and walks you through filling in Now.md interactively. Then follow the 2 manual steps it prints at the end.
+Both paths handle everything: installs dependencies (Node, Claude Code, gh), authenticates GitHub and Claude, creates your private repo from this template, sets up the ChatGPT Chats folder, creates both scheduled agents, and walks you through filling in Now.md interactively. Then install Obsidian on your phone and/or PC and follow OBSIDIAN_SETUP.md — that's it.
 
 ---
 
