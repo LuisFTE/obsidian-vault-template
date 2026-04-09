@@ -180,3 +180,39 @@ tags: [todo]
     today_file.write_text(today_content, encoding="utf-8")
 
 print(f"Carried {len(carried)} item(s) to {today_str}.md")
+
+
+def inject_missing_decision_boxes(file_path):
+    """
+    Scan the entire file for #friction items that are missing decision sub-checkboxes.
+    Inject the 4 decision boxes immediately after any such item.
+    """
+    lines = file_path.read_text(encoding="utf-8").splitlines()
+    out = []
+    i = 0
+    injected = 0
+    while i < len(lines):
+        line = lines[i]
+        out.append(line)
+        # Top-level unchecked item with #friction but no decision boxes following it
+        if re.match(r"^- \[ \]", line) and "#friction" in line:
+            # Peek at next lines — collect any existing indented sub-items
+            j = i + 1
+            existing_subs = []
+            while j < len(lines) and re.match(r"^ {2,}-", lines[j]):
+                existing_subs.append(lines[j])
+                j += 1
+            if not has_decision_boxes(existing_subs):
+                # Absorb any existing subs (keep them) then append decision boxes
+                out.extend(existing_subs)
+                out.extend(DECISION_BOXES)
+                i = j
+                injected += 1
+                continue
+        i += 1
+    if injected:
+        file_path.write_text("\n".join(out) + "\n", encoding="utf-8")
+        print(f"Injected decision boxes into {injected} friction item(s) in {file_path.name}")
+
+
+inject_missing_decision_boxes(today_file)
