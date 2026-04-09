@@ -2,11 +2,13 @@
 carry-forward-todos.py
 
 Mechanically carries unfinished todo items from yesterday to today.
-- Copies unchecked [ ] items into today's todo under ## ↩️ Carry Forward
+- Only parses Work, Life, and Carry Forward sections (skips Recurring, Blocked, Done)
+- Deduplicates: skips items whose core text already appears in today's file
 - Tags items with #friction if they have appeared in 3+ previous todo files
 - Injects decision checkboxes below #friction items (Kill / Shrink / Schedule / Diagnose)
 - If a decision was checked: carries forward with the decision preserved for Claude to act on
 - If no decision was checked: carries forward with fresh (reset) decision checkboxes
+- Final pass: injects decision boxes under any #friction item in the whole file missing them
 
 Run from vault root: python3 scripts/carry-forward-todos.py
 """
@@ -36,6 +38,21 @@ DECISION_BOXES  = [f"    - [ ] {d}" for d in DECISION_LABELS]
 
 DECISION_MAP = {"🔪": "kill", "✂️": "shrink", "🧱": "schedule", "🔍": "diagnose"}
 
+# Sections to carry forward from (everything else is skipped)
+CARRY_SECTIONS = {"💼 Work", "🌿 Life", "↩️ Carry Forward"}
+
+
+def section_name(line):
+    """Extract section name from a ## header line, or None."""
+    m = re.match(r"^## (.+)", line)
+    return m.group(1).strip() if m else None
+
+
+def is_carry_section(name):
+    if name is None:
+        return False
+    return any(key in name for key in CARRY_SECTIONS)
+
 
 def is_main_item(line):
     """Top-level unchecked checkbox (not indented)."""
@@ -50,30 +67,60 @@ def is_sub_item(line):
 def parse_blocks(lines):
     """
     Group lines into blocks: [main_line, sub_line, sub_line, ...]
-    Only captures top-level unchecked items and their indented children.
+    Only captures top-level unchecked items and their indented children,
+    from carry-eligible sections only (Work, Life, Carry Forward).
+    Skips Recurring, Blocked, Done, and any other sections.
     """
     blocks = []
-    current = None
+    current_block = None
+    in_carry_section = False
+    current_section = None
+
     for line in lines:
+        sec = section_name(line)
+        if sec is not None:
+            # Flush any open block
+            if current_block is not None:
+                blocks.append(current_block)
+                current_block = None
+            current_section = sec
+            in_carry_section = is_carry_section(sec)
+            continue
+
+        if not in_carry_section:
+            if current_block is not None:
+                blocks.append(current_block)
+                current_block = None
+            continue
+
         if is_main_item(line):
-            if current is not None:
-                blocks.append(current)
-            current = [line]
-        elif current is not None and is_sub_item(line):
-            current.append(line)
+            if current_block is not None:
+                blocks.append(current_block)
+            current_block = [line]
+        elif current_block is not None and is_sub_item(line):
+            current_block.append(line)
         else:
-            if current is not None:
-                blocks.append(current)
-                current = None
-    if current is not None:
-        blocks.append(current)
+            if current_block is not None:
+                blocks.append(current_block)
+                current_block = None
+
+    if current_block is not None:
+        blocks.append(current_block)
+
     return blocks
+
+
+def item_core(line):
+    """Extract the core text of an item for deduplication / friction counting."""
+    core = re.sub(r"^- \[.\]\s*[🔴🟡🟠⚪🔵🟢🚫🔨👀🚀✅📋\s]*", "", line).strip()
+    core = re.sub(r"#\w+", "", core).strip()
+    core = re.sub(r"—.*$", "", core).strip()  # strip status suffixes
+    return core
 
 
 def count_occurrences(item_text):
     """Count how many previous todo files contain this item (friction detection)."""
-    core = re.sub(r"^- \[ \]\s*[🔴🟡🟠⚪🔵🟢🚫🔨👀🚀✅📋\s]*", "", item_text).strip()
-    core = re.sub(r"#\w+", "", core).strip()
+    core = item_core(item_text)
     if len(core) < 5:
         return 0
     count = 0
@@ -109,14 +156,29 @@ def has_decision_boxes(sub_lines):
     return any("Kill it" in l or "Shrink it" in l for l in sub_lines)
 
 
-# Parse yesterday into blocks of unchecked items
+def already_in_today(core, today_content):
+    """Return True if the item's core text already appears in today's file."""
+    if len(core) < 5:
+        return False
+    return core[:40] in today_content
+
+
+# Parse yesterday into blocks of unchecked items (carry-eligible sections only)
 blocks = parse_blocks(yesterday_lines)
+
+# Load today's existing content for deduplication
+today_content = today_file.read_text(encoding="utf-8") if today_file.exists() else ""
 
 carried = []
 
 for block in blocks:
     main_line = block[0]
     sub_lines = block[1:]
+
+    # Deduplication: skip if core text already present in today's file
+    core = item_core(main_line)
+    if already_in_today(core, today_content):
+        continue
 
     # Apply friction tagging
     occurrences = count_occurrences(main_line)
@@ -126,7 +188,6 @@ for block in blocks:
     is_friction = "#friction" in main_line
 
     if not is_friction:
-        # Plain item — carry as single line
         carried.append([main_line])
         continue
 
@@ -134,38 +195,35 @@ for block in blocks:
     decision = checked_decision(sub_lines)
 
     if decision:
-        # Decision was made — carry with checked box preserved, flag for Claude
         main_flagged = main_line.rstrip() + f" #friction-{decision}"
-        # Keep the sub-lines with the checked box intact
         carried.append([main_flagged] + sub_lines)
     else:
-        # No decision yet — carry with fresh decision checkboxes
         carried.append([main_line] + DECISION_BOXES)
 
 if not carried:
-    exit(0)
-
-# Flatten blocks to lines
-carried_lines = []
-for block in carried:
-    carried_lines.extend(block)
-
-# Write to today's todo
-if today_file.exists():
-    today_content = today_file.read_text(encoding="utf-8")
-    if "## ↩️ Carry Forward" in today_content:
-        # Append to existing section
-        today_content = re.sub(
-            r"(## ↩️ Carry Forward\n)",
-            r"\1\n" + "\n".join(carried_lines) + "\n",
-            today_content,
-        )
-    else:
-        today_content = today_content.rstrip() + "\n\n## ↩️ Carry Forward\n\n"
-        today_content += "\n".join(carried_lines) + "\n"
-    today_file.write_text(today_content, encoding="utf-8")
+    # Still run the friction injection pass even if nothing to carry
+    pass
 else:
-    today_content = f"""---
+    # Flatten blocks to lines
+    carried_lines = []
+    for block in carried:
+        carried_lines.extend(block)
+
+    # Write to today's todo
+    if today_file.exists():
+        today_content = today_file.read_text(encoding="utf-8")
+        if "## ↩️ Carry Forward" in today_content:
+            today_content = re.sub(
+                r"(## ↩️ Carry Forward\n)",
+                r"\1\n" + "\n".join(carried_lines) + "\n",
+                today_content,
+            )
+        else:
+            today_content = today_content.rstrip() + "\n\n## ↩️ Carry Forward\n\n"
+            today_content += "\n".join(carried_lines) + "\n"
+        today_file.write_text(today_content, encoding="utf-8")
+    else:
+        today_content = f"""---
 title: Todo {today_str}
 type: todo
 date: {today_str}
@@ -177,39 +235,44 @@ tags: [todo]
 ## ↩️ Carry Forward
 
 """ + "\n".join(carried_lines) + "\n"
-    today_file.write_text(today_content, encoding="utf-8")
+        today_file.write_text(today_content, encoding="utf-8")
 
-print(f"Carried {len(carried)} item(s) to {today_str}.md")
+    print(f"Carried {len(carried)} item(s) to {today_str}.md")
 
 
 def inject_missing_decision_boxes(file_path):
     """
     Scan the entire file for #friction items that are missing decision sub-checkboxes.
     Inject the 4 decision boxes immediately after any such item.
+    Skips items inside the Recurring section.
     """
     lines = file_path.read_text(encoding="utf-8").splitlines()
     out = []
     i = 0
     injected = 0
+    in_recurring = False
+
     while i < len(lines):
         line = lines[i]
+        sec = section_name(line)
+        if sec is not None:
+            in_recurring = "Recurring" in sec
         out.append(line)
-        # Top-level unchecked item with #friction but no decision boxes following it
-        if re.match(r"^- \[ \]", line) and "#friction" in line:
-            # Peek at next lines — collect any existing indented sub-items
+
+        if not in_recurring and re.match(r"^- \[ \]", line) and "#friction" in line:
             j = i + 1
             existing_subs = []
             while j < len(lines) and re.match(r"^ {2,}-", lines[j]):
                 existing_subs.append(lines[j])
                 j += 1
             if not has_decision_boxes(existing_subs):
-                # Absorb any existing subs (keep them) then append decision boxes
                 out.extend(existing_subs)
                 out.extend(DECISION_BOXES)
                 i = j
                 injected += 1
                 continue
         i += 1
+
     if injected:
         file_path.write_text("\n".join(out) + "\n", encoding="utf-8")
         print(f"Injected decision boxes into {injected} friction item(s) in {file_path.name}")

@@ -1,0 +1,13 @@
+{
+  "_comment": "Configure recurring items for the daily todo. days: which weekdays to show (0=Mon, 1=Tue, 2=Wed, 3=Thu, 4=Fri, 5=Sat, 6=Sun). Omit 'days' to show every day.",
+  "items": [
+    { "text": "🛏️ Make bed",        "days": [0,1,2,3,4,5,6] },
+    { "text": "🏠 Pick up apartment", "days": [0,1,2,3,4,5,6] },
+    { "text": "🚿 Clean sink",        "days": [0,1,2,3,4,5,6] },
+    { "text": "🐱 Comb Sol",          "days": [0,1,2,3,4,5,6] },
+    { "text": "🪣 Litter out",        "days": [0,1,2,3,4,5,6] },
+    { "text": "🗑️ Trash out",         "days": [0,2,4] },
+    { "text": "♻️ Recycling out",     "days": [0,2,4] },
+    { "text": "🌱 Compost out",       "days": [0,2,4] }
+  ]
+}
