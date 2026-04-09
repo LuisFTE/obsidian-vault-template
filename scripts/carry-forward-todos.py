@@ -13,6 +13,7 @@ Mechanically carries unfinished todo items from yesterday to today.
 Run from vault root: python3 scripts/carry-forward-todos.py
 """
 
+import json
 import re
 from datetime import date, timedelta
 from pathlib import Path
@@ -40,6 +41,53 @@ DECISION_MAP = {"🔪": "kill", "✂️": "shrink", "🧱": "schedule", "🔍": 
 
 # Sections to carry forward from (everything else is skipped)
 CARRY_SECTIONS = {"💼 Work", "🌿 Life", "↩️ Carry Forward"}
+
+# Day-name → weekday index (Monday=0)
+_DAY_MAP = {
+    "mon": 0, "tue": 1, "wed": 2, "thu": 3, "fri": 4, "sat": 5, "sun": 6,
+}
+_SHORTHAND = {
+    "daily":    list(range(7)),
+    "weekdays": [0, 1, 2, 3, 4],
+    "weekends": [5, 6],
+}
+
+
+def parse_days(days_value):
+    """
+    Parse the 'days' field from recurring.json into a set of weekday ints.
+    Accepts:
+      - omitted / None    → every day
+      - "daily"           → every day
+      - "weekdays"        → Mon–Fri
+      - "weekends"        → Sat–Sun
+      - "Mon Wed Fri"     → specific days (space-separated 3-letter abbreviations)
+    """
+    if days_value is None:
+        return set(range(7))
+    s = days_value.strip().lower()
+    if s in _SHORTHAND:
+        return set(_SHORTHAND[s])
+    result = set()
+    for token in s.split():
+        if token in _DAY_MAP:
+            result.add(_DAY_MAP[token])
+    return result if result else set(range(7))
+
+
+def recurring_items_for_today():
+    """Return list of recurring item texts that should appear today."""
+    config_path = VAULT / "scripts" / "recurring.json"
+    if not config_path.exists():
+        return []
+    config = json.loads(config_path.read_text(encoding="utf-8"))
+    weekday = today.weekday()  # 0=Mon … 6=Sun
+    result = []
+    for item in config.get("items", []):
+        allowed = parse_days(item.get("days"))
+        if weekday in allowed:
+            result.append(item["text"])
+    return result
 
 
 def section_name(line):
@@ -74,16 +122,13 @@ def parse_blocks(lines):
     blocks = []
     current_block = None
     in_carry_section = False
-    current_section = None
 
     for line in lines:
         sec = section_name(line)
         if sec is not None:
-            # Flush any open block
             if current_block is not None:
                 blocks.append(current_block)
                 current_block = None
-            current_section = sec
             in_carry_section = is_carry_section(sec)
             continue
 
@@ -114,7 +159,7 @@ def item_core(line):
     """Extract the core text of an item for deduplication / friction counting."""
     core = re.sub(r"^- \[.\]\s*[🔴🟡🟠⚪🔵🟢🚫🔨👀🚀✅📋\s]*", "", line).strip()
     core = re.sub(r"#\w+", "", core).strip()
-    core = re.sub(r"—.*$", "", core).strip()  # strip status suffixes
+    core = re.sub(r"—.*$", "", core).strip()
     return core
 
 
@@ -200,16 +245,11 @@ for block in blocks:
     else:
         carried.append([main_line] + DECISION_BOXES)
 
-if not carried:
-    # Still run the friction injection pass even if nothing to carry
-    pass
-else:
-    # Flatten blocks to lines
+if carried:
     carried_lines = []
     for block in carried:
         carried_lines.extend(block)
 
-    # Write to today's todo
     if today_file.exists():
         today_content = today_file.read_text(encoding="utf-8")
         if "## ↩️ Carry Forward" in today_content:
