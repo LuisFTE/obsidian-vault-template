@@ -8,6 +8,16 @@ started: YYYY-MM
 ended: YYYY-MM   # remove if ongoing
 tech: [python, react, ...]
 tags: [project, career, work]
+summary: 
+triggers: []
+key_memories: []
+links:
+  - target: "[[]]"
+    weight: 
+    type: 
+    reason: ""
+    last_referenced: 
+    frequency: 1
 ---
 
 # 🏗️ <Project Name>

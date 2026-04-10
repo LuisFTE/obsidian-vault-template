@@ -6,10 +6,15 @@ location:
 people: []
 tags: [memory]
 summary: 
+topics: []
+arc: "[[]]"
 links:
   - target: "[[]]"
     weight: 
     type: 
+    reason: ""
+    last_referenced: 
+    frequency: 1
 ---
 
 # 🧠 

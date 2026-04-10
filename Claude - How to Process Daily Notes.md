@@ -119,40 +119,79 @@ For each file that exists, run the full workflow (Steps 1–3, 5–11). If a fil
 
 ## Step 4b — Maintain the knowledge graph
 
-Every time you create or update a vault note (person, place, memory, project, ephemeral), maintain two frontmatter fields:
+The vault uses a 3-layer progressive retrieval model. Every time you create or update a note, maintain these graph fields so an agent can navigate efficiently without reading everything.
 
-**`summary`** — 1–3 sentences. Machine-readable. Captures the core meaning of the note at this moment in time. Write it as if it's the only thing another agent will read before deciding whether to open the note.
+---
 
-**`links`** — Directional weighted connections from this note to others that matter from its perspective. Weights are edge-based: they describe how important that connection is *from this note's context*, not the target's inherent importance.
+### Layer 1 — Entity notes (Person, Place)
 
 ```yaml
-summary: "Luis's girlfriend. Dominican single mother, ~42. Complex relationship with recurring conflict cycles followed by closeness. Living together."
+summary: "One sentence. Core identity + current state. Written for an agent deciding whether to open this note."
+key_topics: [relationship, conflict, finances]    # domains this entity matters in
+priority_arcs: ["[[Arc Note Title]]"]             # highest-signal arcs, pre-ranked
 links:
-  - target: "[[Life/Physical/Relationship with Miki]]"
-    weight: 10
-    type: relationship
-  - target: "[[Life/People/Kai]]"
-    weight: 7
-    type: relationship
-  - target: "[[Finance/Physical/Lease - 5750]]"
-    weight: 5
-    type: finance
+  - target: "[[Arc or related note]]"
+    weight: 9           # 1–3 weak · 4–6 moderate · 7–8 strong · 9–10 critical
+    type: conflict      # emotional | conflict | growth | finance | relationship | practical | identity
+    reason: "One phrase — why this connection exists. Pre-compressed so an agent doesn't have to open the target to decide relevance."
+    last_referenced: YYYY-MM-DD
+    frequency: 1        # increment each time this link is traversed
 ```
 
-**Weight scale:** 1–3 weak · 4–6 moderate · 7–8 strong · 9–10 critical
+**`summary`** — keep under 2 sentences. Update whenever core state changes (relationship status, job status, etc.).
+**`key_topics`** — the domains an agent should use to match this entity to a question.
+**`priority_arcs`** — the 1–3 arc notes that best represent this entity's active threads. Ranked by importance.
+**`reason`** on each link — this is the token optimization. An agent reads `reason` to decide relevance without opening the target.
 
-**Link types:** `emotional` · `conflict` · `growth` · `finance` · `relationship` · `practical` · `identity`
+---
 
-**Rules:**
-- Weights are directional — A → B at 9 does not mean B → A at 9
-- Only link if the target would meaningfully help answer a question about the source
-- Update `summary` whenever the note's core state changes (don't let it go stale)
-- Don't over-link — 3–6 meaningful links is better than 15 weak ones
+### Layer 2 — Arc notes (Physical notes, relationship threads, project notes)
 
-**When to run this:**
-- When creating a new person, place, memory, project, or ephemeral note
-- When updating an existing note with meaningful new content
-- Do NOT update graph fields for minor edits (typo fixes, date stamps)
+```yaml
+summary: "What this arc is about and where it currently stands."
+triggers: [chores, disrespect, money]    # keywords that make this arc relevant to a question
+key_memories: ["[[Memory Note]]"]        # the 1–3 memories that best illustrate this arc
+links:
+  - target: "[[Memory or related arc]]"
+    weight: 8
+    type: emotional
+    reason: "Clearest example of the recurring pattern."
+    last_referenced: YYYY-MM-DD
+    frequency: 1
+```
+
+**`triggers`** — what topics or keywords in a question should route an agent to this arc.
+**`key_memories`** — the specific Memory notes that illustrate this arc. The agent loads these, not all memories.
+
+---
+
+### Layer 3 — Memory notes (atomic events)
+
+```yaml
+summary: "What happened and why it matters. One sentence."
+topics: [conflict, respect, relationship]    # what this memory is about
+arc: "[[Parent arc]]"                        # which arc this belongs to
+links:
+  - target: "[[]]"
+    weight: 
+    type: 
+    reason: ""
+    last_referenced: 
+    frequency: 1
+```
+
+**Keep memories minimal.** The body holds the full detail — the frontmatter is the fast path. `summary` should be enough for an agent to decide if it needs to read further.
+
+---
+
+### Rules for all layers
+
+- **Weights are directional** — A → B at weight 9 does not mean B → A at weight 9
+- **`reason` is mandatory on any link weight ≥ 6** — if you can't write a reason, reconsider the link
+- **Update `summary` whenever core state changes** — stale summaries break retrieval
+- **`last_referenced`** — update when you meaningfully revisit or reference this note
+- **`frequency`** — increment when the link is traversed; used for future decay computation
+- **Do NOT update graph fields for minor edits** (typo fixes, date stamps)
 
 ## Step 5 — Check for vault updates
 

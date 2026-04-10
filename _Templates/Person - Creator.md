@@ -9,10 +9,14 @@ born:
 died: 
 tags: [person, creator]
 summary: 
+key_topics: []
 links:
   - target: "[[]]"
     weight: 
     type: 
+    reason: ""
+    last_referenced: 
+    frequency: 1
 ---
 
 # 

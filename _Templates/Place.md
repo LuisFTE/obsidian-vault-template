@@ -5,10 +5,14 @@ subtype: city | neighborhood | country | transit | shop | venue | other
 part_of: "[[Places/]]"
 tags: [place]
 summary: 
+key_topics: []
 links:
   - target: "[[]]"
     weight: 
     type: 
+    reason: ""
+    last_referenced: 
+    frequency: 1
 ---
 
 # 🗺️ 

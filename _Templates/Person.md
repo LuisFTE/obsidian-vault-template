@@ -4,10 +4,15 @@ category: life
 type: person
 tags: [person]
 summary: 
+key_topics: []
+priority_arcs: []
 links:
   - target: "[[]]"
     weight: 
     type: 
+    reason: ""
+    last_referenced: 
+    frequency: 1
 ---
 
 # 
