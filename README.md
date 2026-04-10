@@ -182,7 +182,7 @@ vault/
 
 | Type | Location | Purpose |
 |---|---|---|
-| Daily | `Daily/Life/Notes/` | Day-to-day journal |
+| Daily | `Daily/Notes/` | Day-to-day journal |
 | Todo | `Daily/Todo/` | Work + life tasks with priorities |
 | Person | `Life/People/` | Personal contacts |
 | Creator | `Media/People/` | Public figures (artists, directors) |
@@ -275,13 +275,13 @@ All writers use **pull-rebase** + **theirs** conflict resolution. The agents ret
 When the digest agent encounters a new person it doesn't recognize, it adds a question to `_Index/Open Questions.md`:
 
 ```
-- [ ] [[Daily/Life/Notes/2026-04-03]] — Who is Sarah?
+- [ ] [[Daily/Notes/2026-04-03]] — Who is Sarah?
 ```
 
 Answer inline, then check it off:
 
 ```
-- [x] [[Daily/Life/Notes/2026-04-03]] — Who is Sarah? My college roommate, now lives in Austin.
+- [x] [[Daily/Notes/2026-04-03]] — Who is Sarah? My college roommate, now lives in Austin.
 ```
 
 The daily agent picks up answered questions, creates or updates the relevant note, and clears the queue.

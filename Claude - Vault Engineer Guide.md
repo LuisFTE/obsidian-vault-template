@@ -106,7 +106,7 @@ Career/Company/
 | `person` | `*/People/` | One note per person — identity record |
 | `reference` | Flat in domain folder | Static note; recipe, toolchain, baseline |
 | `place` | `Places/` | Physical location |
-| `daily` | `Daily/Life/Notes/` | Day log |
+| `daily` | `Daily/Notes/` | Day log |
 | `todo` | `Daily/Todo/` | Task list |
 | `media` | `Media/` | Consumed media — photo, movie, album, video |
 

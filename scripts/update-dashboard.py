@@ -21,11 +21,11 @@ content = re.sub(r"(updated:\s*)[\d-]+", f"\\g<1>{today}", content)
 # --- Update Today section ---
 today_block = f"""## Today
 
-- 📓 [[Daily/Life/Notes/{today}]] — daily note
+- 📓 [[Daily/Notes/{today}]] — daily note
 - ✅ [[Daily/Todo/{today}]] — todo"""
 
 content = re.sub(
-    r"## Today\n\n- 📓 \[\[Daily/Life/Notes/[\d-]+\]\].*?\n- ✅ \[\[Daily/Todo/[\d-]+\]\].*",
+    r"## Today\n\n- 📓 \[\[Daily/Notes/[\d-]+\]\].*?\n- ✅ \[\[Daily/Todo/[\d-]+\]\].*",
     today_block,
     content
 )

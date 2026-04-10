@@ -15,7 +15,7 @@ Use this to spot patterns: what keeps showing up? What's worth addressing vs. le
 ## All Friction Items
 
 ```dataviewjs
-const pages = dv.pages('"Daily/Life/Notes"').sort(p => p.file.name, 'desc');
+const pages = dv.pages('"Daily/Notes"').sort(p => p.file.name, 'desc');
 const rows = [];
 
 for (const page of pages) {

@@ -54,7 +54,7 @@ const cutoff = new Date();
 cutoff.setDate(cutoff.getDate() - 14);
 const cutoffStr = cutoff.toISOString().slice(0, 10);
 
-const pages = dv.pages('"Daily/Life/Notes"')
+const pages = dv.pages('"Daily/Notes"')
   .where(p => p.file.name >= cutoffStr)
   .sort(p => p.file.name, 'desc');
 
@@ -89,7 +89,7 @@ renderHeatmapCalendar(this.container, {
   colors: {
     purple: ["#e0d7f5","#b8a9e8","#8f7cd6","#6650c4","#3d2b9e"]
   },
-  entries: dv.pages('"Daily/Life/Notes"')
+  entries: dv.pages('"Daily/Notes"')
     .where(p => p.social !== undefined && p.social > 0)
     .map(p => ({
       date: p.file.name,

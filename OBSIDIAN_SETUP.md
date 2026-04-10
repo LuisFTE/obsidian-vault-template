@@ -78,7 +78,7 @@ Enable each plugin after installing.
 | Setting | Value |
 |---|---|
 | Date format | `YYYY-MM-DD` |
-| New file location | `Daily/Life/Notes` |
+| New file location | `Daily/Notes` |
 | Template file location | `_Templates/Daily Life Note` |
 
 ---

@@ -20,7 +20,7 @@ today_str = today.strftime("%Y-%m-%d")
 today_full = today.strftime("%A, %B %-d, %Y")  # e.g. Sunday, April 6, 2026
 
 # --- Stamp today's daily note ---
-daily_note = VAULT / f"Daily/Life/Notes/{today_str}.md"
+daily_note = VAULT / f"Daily/Notes/{today_str}.md"
 
 if daily_note.exists():
     text = daily_note.read_text(encoding="utf-8")

@@ -34,7 +34,7 @@ python3 scripts/check-changes.py
 
 ## File locations
 
-- **Daily life notes:** `Daily/Life/Notes/YYYY-MM-DD.md`
+- **Daily life notes:** `Daily/Notes/YYYY-MM-DD.md`
 - **Daily todo:** `Daily/Todo/YYYY-MM-DD.md` — combined Work + Life sections in one file
 - **People notes:** `<Category>/People/<Name>.md` — category chosen by context (Life, Career, Family, etc.)
 - **Work project notes:** `Career/Physical/<Project Name>.md` — subtype: project
@@ -52,7 +52,7 @@ python3 -c "
 from datetime import datetime
 import re
 
-path = 'Daily/Life/Notes/YYYY-MM-DD.md'
+path = 'Daily/Notes/YYYY-MM-DD.md'
 date_str = 'YYYY-MM-DD'  # e.g. 2026-04-04
 d = datetime.strptime(date_str, '%Y-%m-%d')
 full = d.strftime('%A, %B %-d, %Y')  # e.g. Friday, April 4, 2026
@@ -94,7 +94,7 @@ Instead of asking Luis directly, write questions to `_Index/Open Questions.md`. 
 
 **Format — append to `_Index/Open Questions.md`:**
 ```
-- [ ] [[Daily/Life/Notes/YYYY-MM-DD]] — Question text here
+- [ ] [[Daily/Notes/YYYY-MM-DD]] — Question text here
 ```
 
 **Rules:**
@@ -111,7 +111,7 @@ python3 -c "
 from datetime import datetime, timedelta
 for i in range(5):
     d = datetime.today() - timedelta(days=i)
-    print(d.strftime('Daily/Life/Notes/%Y-%m-%d.md'))
+    print(d.strftime('Daily/Notes/%Y-%m-%d.md'))
 "
 ```
 
@@ -406,7 +406,7 @@ Pre-fill 1 and 2 with bullets drawn from the week. Leave 3, 4, 5 empty for Luis 
 Before generating the Saturday todo, grep the week's daily notes for `#friction`:
 
 ```bash
-grep -r "#friction" "/mnt/o/Notes/Obsidian Vault/Daily/Life/Notes/" --include="*.md"
+grep -r "#friction" "/mnt/o/Notes/Obsidian Vault/Daily/Notes/" --include="*.md"
 ```
 
 Summarize the results into a short friction report to prepend to question 3:
@@ -446,7 +446,7 @@ Update the frontmatter of the daily note:
 # Use Python to safely update frontmatter (handles emoji in file)
 python3 -c "
 import re
-path = 'Daily/Life/Notes/YYYY-MM-DD.md'
+path = 'Daily/Notes/YYYY-MM-DD.md'
 text = open(path).read()
 text = re.sub(r'(^social:\s*)\d+', r'\g<1>SCORE', text, flags=re.MULTILINE)
 open(path, 'w').write(text)
@@ -516,7 +516,7 @@ Every morning, generate the `🔭 Signals` block for today's daily note. This is
 python3 -c "
 import re
 
-path = 'Daily/Life/Notes/YYYY-MM-DD.md'
+path = 'Daily/Notes/YYYY-MM-DD.md'
 text = open(path).read()
 
 signals = '''> [!abstract]- 🔭 Signals

@@ -62,7 +62,7 @@ if not user_commits:
 # Get the diff of daily note files only
 diff = git(
     "diff", last_auto, "HEAD", "--",
-    "Daily/Life/Notes/", "Daily/Todo/"
+    "Daily/Notes/", "Daily/Todo/"
 )
 
 if not diff.strip():

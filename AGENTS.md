@@ -98,7 +98,7 @@ After processing, remove ALL `- [x]` lines from the file — resolved or not. Th
 ## Task 2: Weekly Review (Saturdays only)
 
 Run `date +%u`. If the result is 6 (Saturday):
-1. Read `_Index/Now.md` and the last 7 `Daily/Life/Notes/YYYY-MM-DD.md` files
+1. Read `_Index/Now.md` and the last 7 `Daily/Notes/YYYY-MM-DD.md` files
 2. Get week ID: `date +%Y-W%V`
 3. Write or update `Reviews/YYYY-WNN.md` with sections: Work, Life, Patterns, Carry Forward
 4. Update `_Index/Now.md` only if something materially changed
@@ -114,7 +114,7 @@ Read these files to build a dynamic list of topic candidates:
 - `_Index/Now.md` — current sprint tech stack, what's blocked, what's on your mind
 - `Learning/` folder — list files and read any active notes
 - `Life/Physical/` folder — health goals
-- Last 3 `Daily/Life/Notes/YYYY-MM-DD.md` files — what's been on your mind recently
+- Last 3 `Daily/Notes/YYYY-MM-DD.md` files — what's been on your mind recently
 
 From this, build a pool of 15+ specific topic candidates. Be specific:
 - Not "Japanese" but "Japanese pitch accent practice" or "Japanese immersion reading N3"
@@ -167,7 +167,7 @@ Remove entries in `_Index/Content Queue Log.md` with a date older than 7 days fr
 
 Generate a `🔭 Signals` block for today's daily note — a writing key the user sees when they open the note.
 
-Read the last 5 `Daily/Life/Notes/YYYY-MM-DD.md` files and `_Index/Ephemeral - Active.md`. From this, generate three fields:
+Read the last 5 `Daily/Notes/YYYY-MM-DD.md` files and `_Index/Ephemeral - Active.md`. From this, generate three fields:
 
 **Patterns** (2–3 bullets) — recurring themes, words, feelings across recent notes. Specific and observational.
 - Bad: "You seem stressed" → Good: "Anxiety + money appeared together twice this week"
@@ -188,7 +188,7 @@ import re, sys
 from datetime import datetime
 
 today = datetime.today().strftime('%Y-%m-%d')
-path = f'Daily/Life/Notes/{today}.md'
+path = f'Daily/Notes/{today}.md'
 
 patterns = 'LINE1 · LINE2'  # replace with actual content
 threads  = 'LINE1 · LINE2'
