@@ -117,6 +117,43 @@ for i in range(5):
 
 For each file that exists, run the full workflow (Steps 1–3, 5–11). If a file doesn't exist for a given date, skip it.
 
+## Step 4b — Maintain the knowledge graph
+
+Every time you create or update a vault note (person, place, memory, project, ephemeral), maintain two frontmatter fields:
+
+**`summary`** — 1–3 sentences. Machine-readable. Captures the core meaning of the note at this moment in time. Write it as if it's the only thing another agent will read before deciding whether to open the note.
+
+**`links`** — Directional weighted connections from this note to others that matter from its perspective. Weights are edge-based: they describe how important that connection is *from this note's context*, not the target's inherent importance.
+
+```yaml
+summary: "Luis's girlfriend. Dominican single mother, ~42. Complex relationship with recurring conflict cycles followed by closeness. Living together."
+links:
+  - target: "[[Life/Physical/Relationship with Miki]]"
+    weight: 10
+    type: relationship
+  - target: "[[Life/People/Kai]]"
+    weight: 7
+    type: relationship
+  - target: "[[Finance/Physical/Lease - 5750]]"
+    weight: 5
+    type: finance
+```
+
+**Weight scale:** 1–3 weak · 4–6 moderate · 7–8 strong · 9–10 critical
+
+**Link types:** `emotional` · `conflict` · `growth` · `finance` · `relationship` · `practical` · `identity`
+
+**Rules:**
+- Weights are directional — A → B at 9 does not mean B → A at 9
+- Only link if the target would meaningfully help answer a question about the source
+- Update `summary` whenever the note's core state changes (don't let it go stale)
+- Don't over-link — 3–6 meaningful links is better than 15 weak ones
+
+**When to run this:**
+- When creating a new person, place, memory, project, or ephemeral note
+- When updating an existing note with meaningful new content
+- Do NOT update graph fields for minor edits (typo fixes, date stamps)
+
 ## Step 5 — Check for vault updates
 
 Look at what happened in the daily note and ask: does anything here change the status of an existing note?
@@ -487,6 +524,11 @@ title: <Name>
 category: <life | career | family | friends | ...>
 type: person
 tags: [person, ...]
+summary: "One sentence — who they are and why they appear in the vault."
+links:
+  - target: "[[]]"
+    weight: 
+    type: 
 ---
 
 ## Who

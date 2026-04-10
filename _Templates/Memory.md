@@ -5,6 +5,11 @@ date: YYYY-MM-DD
 location: 
 people: []
 tags: [memory]
+summary: 
+links:
+  - target: "[[]]"
+    weight: 
+    type: 
 ---
 
 # 🧠 

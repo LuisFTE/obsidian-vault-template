@@ -8,6 +8,11 @@ nationality:
 born: 
 died: 
 tags: [person, creator]
+summary: 
+links:
+  - target: "[[]]"
+    weight: 
+    type: 
 ---
 
 # 

@@ -8,6 +8,11 @@ started: YYYY-MM
 ended: YYYY-MM   # remove if ongoing
 tech: [python, react, ...]
 tags: [project, personal]
+summary: 
+links:
+  - target: "[[]]"
+    weight: 
+    type: 
 ---
 
 # 🚀 <Project Name>

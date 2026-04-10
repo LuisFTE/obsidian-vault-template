@@ -4,6 +4,11 @@ type: place
 subtype: city | neighborhood | country | transit | shop | venue | other
 part_of: "[[Places/]]"
 tags: [place]
+summary: 
+links:
+  - target: "[[]]"
+    weight: 
+    type: 
 ---
 
 # 🗺️ 
