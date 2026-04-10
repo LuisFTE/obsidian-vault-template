@@ -1,12 +1,11 @@
 ---
-title: <Project Name>
-category: career
-type: physical
-subtype: project
-status: active | completed | on_hold | abandoned
+title: 
+type: arc
+status: active | resolved
+parent: "[[]]"   # company entity or career entity
 started: YYYY-MM
 ended: YYYY-MM   # remove if ongoing
-tech: [python, react, ...]
+tech: []
 tags: [project, career, work]
 summary: 
 triggers: []
@@ -14,88 +13,56 @@ key_memories: []
 links:
   - target: "[[]]"
     weight: 
-    type: 
+    type: parent | related
     reason: ""
-    last_referenced: 
+    last_referenced: YYYY-MM-DD
     frequency: 1
 ---
 
-# 🏗️ <Project Name>
+# <Project Name>
 
-## 📌 Summary
+## Summary
 
-What the project is, why it exists, and what problem it solves.
+What the project is, why it exists, what problem it solves.
 
----
-
-## 🛠️ Tech Stack
+## Tech Stack
 
 - [lang] 
 - [framework] 
 - [infra] 
-- [tools] 
 
----
+## Arc
 
-## 📖 Arcs
+Narrative — enough to reconstruct the project without re-reading daily notes.
 
-Use only the categories that apply. Each arc should have enough narrative to reconstruct what happened, why, who was involved, and how it resolved — without needing to refer back to daily notes.
+> Arc categories: `Research` · `Design` · `Implementation` · `Testing` · `Review` · `Deployment` · `Communication: <Team>` · `Blocker: <Name>` · `Maintenance`
 
-> Available categories: `Research` · `Design` · `Implementation` · `Testing` · `Review` · `Deployment` · `Communication: <Team>` · `Blocker: <Name>` · `Maintenance`
-
-### 🔬 Research
-*(What was explored, what questions were being answered, what was learned, when it concluded.)*
+### Implementation
 
 - [YYYY-MM-DD] 
 
-### 🎨 Design
-*(What was designed, key decisions made, who was involved, any scope changes, outcome.)*
-
-- [YYYY-MM-DD] 
-
-### ⚙️ Implementation
-*(What was built, who did what, scope of the work, notable technical decisions.)*
-
-- [YYYY-MM-DD] 
-
----
-
-## 🕰️ Timeline
+## Timeline
 
 - [YYYY-MM] Started
-- [YYYY-MM] Arc: <name> — 
 
----
-
-## 📋 Key Facts
+## Key Facts
 
 - [scope] 
 - [team] 
 - [ownership] 
 
----
-
-## 🎫 Jira Tickets
-
-*Current sprint: NAME (Wed MMM DD – Tue MMM DD)*
+## Jira Tickets
 
 | Ticket | State | Notes |
 |---|---|---|
-| Ticket name | 🔨 wip | |
-| Ticket name | 📋 todo | |
+| | 📋 todo | |
 
 > Ticket states: 📋 todo · 🔨 wip · 👀 review · 🚫 blocked · 🚀 deploy · ✅ done
 
----
-
-## 📅 Sprint History
-
-| Sprint | Dates | Delivered | Carried Over |
-|---|---|---|---|
-| NAME | Wed MMM DD – Tue MMM DD | | |
-
----
-
 ## 🚦 Current State
 
-Where it stands. What's in progress, what's blocked, what's next.
+Where it stands.
+
+## 🔗 Linked Notes
+
+-

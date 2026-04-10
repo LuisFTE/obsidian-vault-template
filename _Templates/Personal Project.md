@@ -1,72 +1,58 @@
 ---
-title: <Project Name>
-category: projects
-type: physical
-subtype: project
-status: active | completed | on_hold | abandoned
+title: 
+type: arc
+status: active | resolved
+parent: "[[Projects/Projects]]"
 started: YYYY-MM
 ended: YYYY-MM   # remove if ongoing
-tech: [python, react, ...]
+tech: []
 tags: [project, personal]
 summary: 
 triggers: []
 key_memories: []
 links:
-  - target: "[[]]"
-    weight: 
-    type: 
+  - target: "[[Projects/Projects]]"
+    weight: 9
+    type: parent
     reason: ""
-    last_referenced: 
+    last_referenced: YYYY-MM-DD
     frequency: 1
 ---
 
-# 🚀 <Project Name>
+# <Project Name>
 
-## 📌 Summary
+## Summary
 
 What the project is and why you're building it.
 
----
-
-## 🛠️ Tech Stack
+## Tech Stack
 
 - [lang] 
 - [framework] 
-- [infra] 
-- [tools] 
 
----
+## Arc
 
-## 📖 Arcs
-
-### <Arc Category>
-*(Narrative: what happened, why, who was involved, how it resolved.)*
+Narrative — what happened, why, what was built.
 
 - [YYYY-MM-DD] 
 
----
-
-## 🕰️ Timeline
+## Timeline
 
 - [YYYY-MM] Started
-- [YYYY-MM] Arc: <name> — 
-
----
-
-## 📋 Key Facts
-
-- [scope] 
-- [goal] 
-- [motivation] 
-
----
 
 ## 🚦 Current State
 
-Where it stands. What's in progress, what's blocked, what's next.
+Where it stands.
 
----
+## Ephemerals
+
+<!-- Future ideas for this project that haven't been started yet.
+### Add feature X
+- **status:** open
+- **first_seen:** YYYY-MM
+- **context:** One line.
+-->
 
 ## 🔗 Linked Notes
 
-- 
+-
