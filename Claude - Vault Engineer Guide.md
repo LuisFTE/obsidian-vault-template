@@ -41,7 +41,7 @@ If `Now.md` is stale or missing context, that's a bug — fix it.
 
 ```
 _Index/          — Dashboard, Now, Friction Log, indexes (entry points)
-_Templates/      — Note templates (daily, todo, project, person, media, place)
+_Templates/      — Note templates (daily, todo, project, person, media, place, memory)
 Daily/
   Life/Notes/    — Daily life logs (YYYY-MM-DD.md)
   Todo/          — Combined work+life todos (YYYY-MM-DD.md)
@@ -59,6 +59,7 @@ Media/           — Things the user consumed or photographed
   People/        — Public creators (artists, directors, musicians) — NOT personal contacts
   Channels/      — YouTube channels and similar
 Places/          — Physical locations (cities, neighborhoods, venues, transit)
+Memories/        — Events, trips, experiences worth keeping — linked to People + Places
 Scratchpad/      — Freeform notes and brain dumps; processed by 5am agent, archived after
   Archived/      — Processed scratchpad files (never deleted)
 scripts/         — Python utility scripts run by agents or manually
@@ -77,6 +78,8 @@ Every note belongs to a **category** (the folder) and a **type** (the subfolder 
 | Daily | `Daily/Life/Notes/` | Day log — one file per day |
 | Todo | `Daily/Todo/` | Task list — one file per day |
 | Review | `Reviews/` | Weekly/monthly synthesis |
+| Memory | `Memories/` | An event, trip, or experience worth keeping — links to People + Places |
+| Place | `Places/` | A physical location — city, venue, neighborhood, restaurant |
 
 ### Frontmatter
 
