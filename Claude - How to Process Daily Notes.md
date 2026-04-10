@@ -189,9 +189,23 @@ links:
 - **Weights are directional** — A → B at weight 9 does not mean B → A at weight 9
 - **`reason` is mandatory on any link weight ≥ 6** — if you can't write a reason, reconsider the link
 - **Update `summary` whenever core state changes** — stale summaries break retrieval
-- **`last_referenced`** — update when you meaningfully revisit or reference this note
-- **`frequency`** — increment when the link is traversed; used for future decay computation
 - **Do NOT update graph fields for minor edits** (typo fixes, date stamps)
+
+### Updating frequency and last_referenced during digest
+
+Every time you open a note by following a link from a source note, update that link in the **source note**:
+
+```yaml
+last_referenced: YYYY-MM-DD   # set to today
+frequency: N                  # increment by 1
+```
+
+Example: you're processing Miki's person note and follow its link to `[[Life/Physical/Relationship with Miki]]`. After opening that arc note, go back to Miki's frontmatter, find the link pointing to `[[Life/Physical/Relationship with Miki]]`, set `last_referenced` to today, and increment `frequency`.
+
+**Rules:**
+- Only update when you actually open and read the target note — not just because a link exists
+- Use Python to update frontmatter safely (YAML parse → modify → write back)
+- Batch all link updates for a given note into a single write, not one write per link
 
 ## Step 5 — Check for vault updates
 
